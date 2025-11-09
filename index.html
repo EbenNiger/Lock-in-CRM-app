@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Professional CRM</title>
+    <title>LOCK-IN CRM</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -13,721 +14,992 @@
         }
         
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            background: #0f0f13;
+            color: #ffffff;
             min-height: 100vh;
-            padding-bottom: 5rem;
+            scroll-behavior: smooth;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
         }
         
+        ::-webkit-scrollbar-track {
+            background: #0f0f13;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #7b5cff;
+            border-radius: 4px;
+        }
+
         .container {
-            max-width: 600px;
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 1rem;
+            padding: 0 24px;
         }
-        
-        /* Code Entry Screen */
-        .code-entry-screen {
-            position: fixed;
-            inset: 0;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-            padding: 2rem;
-        }
-        
-        .code-entry-card {
-            background: white;
-            padding: 2rem;
-            border-radius: 1.5rem;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            text-align: center;
-            max-width: 400px;
-            width: 100%;
-        }
-        
-        .code-entry-card h1 {
-            color: #667eea;
-            margin-bottom: 0.5rem;
-            font-size: 1.75rem;
-        }
-        
-        .code-entry-card p {
-            color: #666;
-            margin-bottom: 1.5rem;
-        }
-        
-        .code-input {
-            width: 100%;
-            padding: 1rem;
-            border: 3px solid #667eea;
-            border-radius: 0.75rem;
-            font-size: 1.25rem;
-            text-align: center;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            margin-bottom: 1rem;
-        }
-        
-        .code-submit {
-            width: 100%;
-            padding: 1rem;
-            background: #667eea;
-            color: white;
-            border: none;
-            border-radius: 0.75rem;
-            font-size: 1.125rem;
-            font-weight: 600;
-            cursor: pointer;
-        }
-        
-        /* Header */
+
         .header {
-            background: white;
-            padding: 1rem;
-            border-radius: 1rem;
-            margin-bottom: 1rem;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(15, 15, 19, 0.9);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid #2a2a32;
+            z-index: 1000;
+            padding: 20px 0;
         }
-        
-        .header-top {
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 24px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 0.5rem;
         }
-        
-        .header h1 {
-            color: #667eea;
-            font-size: 1.5rem;
+
+        .logo {
+            font-size: 24px;
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: -0.5px;
         }
-        
+
+        .client-info {
+            font-size: 13px;
+            color: #aaaaaa;
+            font-weight: 500;
+        }
+
         .logout-btn {
-            background: #fee;
-            color: #c00;
-            border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 0.5rem;
-            font-size: 0.875rem;
-            cursor: pointer;
-        }
-        
-        .client-badge {
-            background: #f0f0f0;
-            padding: 0.5rem 1rem;
-            border-radius: 0.5rem;
-            font-size: 0.875rem;
-            color: #666;
-        }
-        
-        /* Navigation Tabs */
-        .nav-tabs {
-            display: flex;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-            overflow-x: auto;
-        }
-        
-        .nav-tab {
-            padding: 0.75rem 1.5rem;
-            background: rgba(255,255,255,0.2);
-            color: white;
-            border: none;
-            border-radius: 0.75rem;
+            background: transparent;
+            border: 1px solid #2a2a32;
+            color: #aaaaaa;
+            padding: 8px 20px;
+            border-radius: 12px;
             font-weight: 600;
+            font-size: 14px;
             cursor: pointer;
-            white-space: nowrap;
-            transition: all 0.2s;
+            transition: all 0.3s ease;
         }
-        
-        .nav-tab.active {
-            background: white;
-            color: #667eea;
+
+        .logout-btn:hover {
+            border-color: #7b5cff;
+            color: #ffffff;
         }
-        
-        /* Dashboard */
-        .dashboard {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 1rem;
-            margin-bottom: 1rem;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+
+        .banner {
+            position: fixed;
+            top: 76px;
+            left: 0;
+            right: 0;
+            background: #7b5cff;
+            padding: 16px;
+            text-align: center;
+            z-index: 999;
+            animation: slideDown 0.5s ease-out;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
         }
-        
-        .dashboard h2 {
-            color: #667eea;
-            margin-bottom: 1rem;
-            font-size: 1.25rem;
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
         }
-        
+
+        .banner-text {
+            font-weight: 700;
+            font-size: 15px;
+            color: #ffffff;
+        }
+
+        .banner-close {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: #ffffff;
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .banner-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .main-content {
+            padding-top: 140px;
+            padding-bottom: 200px;
+        }
+
+        .quote-card {
+            background: #18181e;
+            border: 1px solid #2a2a32;
+            border-radius: 16px;
+            padding: 32px;
+            margin-bottom: 40px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .quote-text {
+            font-size: 18px;
+            font-weight: 500;
+            color: #ffffff;
+            margin-bottom: 12px;
+            font-style: italic;
+        }
+
+        .quote-author {
+            font-size: 14px;
+            color: #aaaaaa;
+            font-weight: 500;
+        }
+
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
-            margin-bottom: 1.5rem;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
         }
-        
+
         .stat-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 1rem;
-            border-radius: 0.75rem;
-            color: white;
+            background: #18181e;
+            border: 1px solid #2a2a32;
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            animation: fadeInUp 0.6s ease-out;
         }
-        
+
+        .stat-card:nth-child(1) { animation-delay: 0.1s; }
+        .stat-card:nth-child(2) { animation-delay: 0.2s; }
+        .stat-card:nth-child(3) { animation-delay: 0.3s; }
+        .stat-card:nth-child(4) { animation-delay: 0.4s; }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px rgba(123, 92, 255, 0.3);
+            border-color: #7b5cff;
+        }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .stat-icon {
+            font-size: 32px;
+        }
+
+        .stat-badge {
+            background: rgba(123, 92, 255, 0.15);
+            color: #7b5cff;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
         .stat-value {
-            font-size: 2rem;
-            font-weight: bold;
-            margin-bottom: 0.25rem;
+            font-size: 48px;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 8px;
+            line-height: 1;
         }
-        
+
         .stat-label {
-            font-size: 0.875rem;
-            opacity: 0.9;
-        }
-        
-        .pipeline-section {
-            margin-bottom: 1rem;
-        }
-        
-        .pipeline-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.75rem;
-            background: #f9f9f9;
-            border-radius: 0.5rem;
-            margin-bottom: 0.5rem;
-        }
-        
-        .pipeline-count {
-            background: #667eea;
-            color: white;
-            padding: 0.25rem 0.75rem;
-            border-radius: 9999px;
+            font-size: 14px;
+            color: #aaaaaa;
             font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
-        
-        /* Cards */
-        .card {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 1rem;
-            margin-bottom: 1rem;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+
+        .section-card {
+            background: #18181e;
+            border: 1px solid #2a2a32;
+            border-radius: 16px;
+            padding: 32px;
+            margin-bottom: 40px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+            animation: fadeInUp 0.6s ease-out 0.5s backwards;
         }
-        
-        /* Contact Card */
-        .contact-card {
-            background: white;
-            padding: 1.25rem;
-            border-radius: 1rem;
-            margin-bottom: 1rem;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            border-left: 4px solid #667eea;
-        }
-        
-        .contact-header {
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 24px;
             display: flex;
-            justify-content: space-between;
-            align-items: start;
-            margin-bottom: 1rem;
+            align-items: center;
+            gap: 12px;
         }
-        
-        .contact-name {
-            font-size: 1.25rem;
-            font-weight: bold;
-            color: #333;
+
+        .filter-bar {
+            margin-bottom: 24px;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
         }
-        
-        .contact-company {
-            font-size: 0.875rem;
-            color: #666;
-            margin-top: 0.25rem;
+
+        .table-container {
+            overflow-x: auto;
         }
-        
+
+        .leads-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 900px;
+        }
+
+        .leads-table thead tr {
+            border-bottom: 1px solid #2a2a32;
+        }
+
+        .leads-table th {
+            text-align: left;
+            padding: 16px;
+            font-size: 12px;
+            font-weight: 700;
+            color: #aaaaaa;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .leads-table tbody tr {
+            border-bottom: 1px solid #2a2a32;
+            transition: all 0.3s ease;
+            animation: fadeInRow 0.4s ease-out backwards;
+            cursor: pointer;
+        }
+
+        .leads-table tbody tr:nth-child(1) { animation-delay: 0.1s; }
+        .leads-table tbody tr:nth-child(2) { animation-delay: 0.2s; }
+        .leads-table tbody tr:nth-child(3) { animation-delay: 0.3s; }
+        .leads-table tbody tr:nth-child(4) { animation-delay: 0.4s; }
+        .leads-table tbody tr:nth-child(5) { animation-delay: 0.5s; }
+
+        @keyframes fadeInRow {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .leads-table tbody tr:hover {
+            background: #1f1f25;
+        }
+
+        .leads-table td {
+            padding: 20px 16px;
+            font-size: 14px;
+            color: #ffffff;
+            font-weight: 500;
+        }
+
         .status-badge {
-            padding: 0.25rem 0.75rem;
-            border-radius: 9999px;
-            font-size: 0.75rem;
-            font-weight: 600;
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 700;
+            display: inline-block;
         }
-        
-        .status-newlead { background: #dbeafe; color: #1e40af; }
-        .status-contacted { background: #e9d5ff; color: #6b21a8; }
-        .status-qualified { background: #fef3c7; color: #92400e; }
-        .status-negotiating { background: #fed7aa; color: #9a3412; }
-        .status-converted { background: #d1fae5; color: #065f46; }
-        .status-lost { background: #fee2e2; color: #991b1b; }
-        
-        .contact-info {
-            margin-bottom: 1rem;
-            font-size: 0.875rem;
-            color: #666;
+
+        .status-newlead {
+            background: rgba(59, 130, 246, 0.15);
+            color: #3b82f6;
         }
-        
-        .contact-info div {
-            margin-bottom: 0.25rem;
+
+        .status-contacted {
+            background: rgba(168, 85, 247, 0.15);
+            color: #a855f7;
         }
-        
-        .activity-summary {
-            background: #f9f9f9;
-            padding: 0.75rem;
-            border-radius: 0.5rem;
-            margin-bottom: 1rem;
-            font-size: 0.875rem;
+
+        .status-qualified {
+            background: rgba(245, 158, 11, 0.15);
+            color: #f59e0b;
         }
-        
-        .activity-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 0.25rem;
+
+        .status-negotiating {
+            background: rgba(6, 182, 212, 0.15);
+            color: #06b6d4;
         }
-        
-        .next-action {
-            background: #fff3cd;
-            border-left: 4px solid #ffc107;
-            padding: 0.75rem;
-            border-radius: 0.5rem;
-            margin-bottom: 1rem;
-            font-size: 0.875rem;
+
+        .status-converted {
+            background: rgba(34, 197, 94, 0.15);
+            color: #22c55e;
         }
-        
-        .history-toggle {
-            color: #667eea;
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 0.875rem;
-            text-decoration: underline;
-            margin-bottom: 0.5rem;
+
+        .status-lost {
+            background: rgba(239, 68, 68, 0.15);
+            color: #ef4444;
         }
-        
-        .history-list {
-            font-size: 0.8rem;
-            color: #666;
-            background: #f9f9f9;
-            padding: 0.75rem;
-            border-radius: 0.5rem;
-            max-height: 200px;
-            overflow-y: auto;
+
+        .floating-add {
+            position: fixed;
+            bottom: 32px;
+            right: 32px;
+            background: #18181e;
+            border: 1px solid #2a2a32;
+            border-radius: 16px;
+            padding: 24px;
+            width: 320px;
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
+            animation: floatIn 0.5s ease-out;
+            z-index: 900;
         }
-        
-        .history-item {
-            margin-bottom: 0.5rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 1px solid #e0e0e0;
+
+        @keyframes floatIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
         }
-        
-        .contact-actions {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 0.5rem;
+
+        .floating-add:hover {
+            transform: scale(1.02);
+            box-shadow: 0 12px 50px rgba(123, 92, 255, 0.4);
         }
-        
-        .action-btn {
-            padding: 0.75rem;
-            border: none;
-            border-radius: 0.5rem;
-            font-size: 0.875rem;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.25rem;
+
+        .floating-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 16px;
         }
-        
-        .btn-primary { background: #667eea; color: white; }
-        .btn-success { background: #10b981; color: white; }
-        .btn-warning { background: #f59e0b; color: white; }
-        .btn-danger { background: #ef4444; color: white; }
-        .btn-secondary { background: #e5e7eb; color: #374151; }
-        
-        /* Forms */
+
         .form-group {
-            margin-bottom: 1rem;
+            margin-bottom: 12px;
         }
-        
-        .form-group label {
-            display: block;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            color: #333;
-        }
-        
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
+
+        .form-input {
             width: 100%;
-            padding: 0.75rem;
-            border: 2px solid #e0e0e0;
-            border-radius: 0.5rem;
-            font-size: 1rem;
+            background: #0f0f13;
+            border: 1px solid #2a2a32;
+            border-radius: 12px;
+            padding: 12px 16px;
+            font-size: 14px;
+            color: #ffffff;
+            font-weight: 500;
+            transition: all 0.3s ease;
         }
-        
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
+
+        .form-input:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: #7b5cff;
+            box-shadow: 0 0 0 3px rgba(123, 92, 255, 0.1);
         }
-        
-        .form-row {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
+
+        .form-input::placeholder {
+            color: #aaaaaa;
         }
-        
-        /* FAB */
-        .fab {
-            position: fixed;
-            bottom: 1.5rem;
-            right: 1.5rem;
-            width: 3.5rem;
-            height: 3.5rem;
-            border-radius: 50%;
-            background: #667eea;
-            color: white;
-            border: none;
-            box-shadow: 0 4px 20px rgba(102,126,234,0.5);
-            cursor: pointer;
-            font-size: 1.5rem;
-            z-index: 100;
-        }
-        
-        /* Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.7);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-            padding: 1rem;
-            overflow-y: auto;
-        }
-        
-        .modal.active {
-            display: flex;
-        }
-        
-        .modal-content {
-            background: white;
-            border-radius: 1rem;
+
+        .add-btn {
             width: 100%;
-            max-width: 500px;
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-        
-        .modal-header {
-            padding: 1.5rem;
-            border-bottom: 1px solid #e0e0e0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            background: white;
-            z-index: 10;
-        }
-        
-        .modal-header h2 {
-            color: #667eea;
-        }
-        
-        .close-modal {
-            background: none;
+            background: #7b5cff;
             border: none;
-            font-size: 1.5rem;
+            border-radius: 12px;
+            padding: 14px;
+            font-size: 14px;
+            font-weight: 700;
+            color: #ffffff;
             cursor: pointer;
-            color: #999;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
-        
-        .modal-body {
-            padding: 1.5rem;
+
+        .add-btn:hover {
+            background: #9b7bff;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(123, 92, 255, 0.4);
         }
-        
+
+        .add-btn:active {
+            transform: scale(0.97);
+        }
+
+        .btn-loading {
+            position: relative;
+            pointer-events: none;
+            color: transparent;
+        }
+
+        .btn-loading::after {
+            content: '';
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            top: 50%;
+            left: 50%;
+            margin-left: -8px;
+            margin-top: -8px;
+            border: 2px solid #ffffff;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 0.6s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .btn-danger {
+            background: #ef4444;
+        }
+
+        .btn-danger:hover {
+            background: #dc2626;
+            box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
+        }
+
         .hidden {
             display: none !important;
         }
-        
-        .loading {
-            text-align: center;
-            padding: 3rem;
-            color: white;
+
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
         }
-        
-        .empty-state {
-            text-align: center;
-            padding: 3rem 1rem;
-            color: #999;
-        }
-        
-        .search-bar {
-            margin-bottom: 1rem;
-            position: relative;
-        }
-        
-        .search-bar input {
+
+        .modal-content {
+            background: #18181e;
+            border: 1px solid #2a2a32;
+            border-radius: 16px;
             width: 100%;
-            padding: 0.75rem 1rem 0.75rem 2.5rem;
-            border: 2px solid white;
-            border-radius: 0.75rem;
-            font-size: 1rem;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: modalIn 0.3s ease-out;
         }
-        
-        .search-icon {
-            position: absolute;
-            left: 0.75rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #999;
+
+        @keyframes modalIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .modal-header {
+            padding: 24px;
+            border-bottom: 1px solid #2a2a32;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .modal-close {
+            background: transparent;
+            border: none;
+            color: #aaaaaa;
+            font-size: 24px;
+            cursor: pointer;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .modal-close:hover {
+            background: #2a2a32;
+            color: #ffffff;
+        }
+
+        .modal-body {
+            padding: 24px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #aaaaaa;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        select.form-input {
+            cursor: pointer;
+        }
+
+        textarea.form-input {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        .code-entry {
+            position: fixed;
+            inset: 0;
+            background: #0f0f13;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            z-index: 3000;
+        }
+
+        .code-card {
+            background: #18181e;
+            border: 1px solid #2a2a32;
+            border-radius: 16px;
+            padding: 48px;
+            width: 100%;
+            max-width: 440px;
+            text-align: center;
+            box-shadow: 0 0 40px rgba(123, 92, 255, 0.2);
+        }
+
+        .code-icon {
+            font-size: 64px;
+            margin-bottom: 24px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .code-title {
+            font-size: 28px;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 12px;
+        }
+
+        .code-subtitle {
+            font-size: 14px;
+            color: #aaaaaa;
+            margin-bottom: 32px;
+        }
+
+        .code-input {
+            width: 100%;
+            background: #0f0f13;
+            border: 2px solid #7b5cff;
+            border-radius: 12px;
+            padding: 16px;
+            font-size: 18px;
+            color: #ffffff;
+            font-weight: 700;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .code-input:focus {
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(123, 92, 255, 0.2);
+        }
+
+        .code-btn {
+            width: 100%;
+            background: #7b5cff;
+            border: none;
+            border-radius: 12px;
+            padding: 16px;
+            font-size: 16px;
+            font-weight: 700;
+            color: #ffffff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .code-btn:hover {
+            background: #9b7bff;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(123, 92, 255, 0.5);
+        }
+
+        .code-btn:active {
+            transform: scale(0.97);
+        }
+
+        .loading-screen {
+            position: fixed;
+            inset: 0;
+            background: #0f0f13;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 3000;
+        }
+
+        .loading-content {
+            text-align: center;
+        }
+
+        .loading-icon {
+            font-size: 64px;
+            margin-bottom: 24px;
+            animation: float 2s ease-in-out infinite;
+        }
+
+        .loading-text {
+            font-size: 20px;
+            font-weight: 700;
+            color: #7b5cff;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 100px;
+            right: 32px;
+            background: #18181e;
+            border: 1px solid #2a2a32;
+            border-radius: 12px;
+            padding: 16px 24px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+            z-index: 9999;
+            animation: slideInRight 0.3s ease-out;
+            max-width: 400px;
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .toast.success {
+            border-left: 4px solid #22c55e;
+        }
+
+        .toast.error {
+            border-left: 4px solid #ef4444;
+        }
+
+        .toast-message {
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .floating-add {
+                left: 16px;
+                right: 16px;
+                bottom: 16px;
+                width: auto;
+            }
+
+            .header-content {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .main-content {
+                padding-top: 180px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .stat-value {
+                font-size: 36px;
+            }
+
+            .quote-card {
+                padding: 24px;
+            }
+
+            .section-card {
+                padding: 24px;
+            }
+
+            .toast {
+                right: 16px;
+                left: 16px;
+                bottom: 80px;
+            }
+
+            .filter-bar {
+                flex-direction: column;
+            }
+
+            .filter-bar .form-input {
+                width: 100%;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Code Entry Screen -->
-    <div id="codeEntryScreen" class="code-entry-screen hidden">
-        <div class="code-entry-card">
-            <h1>🚀 Welcome to Your CRM</h1>
-            <p>Enter your access code to get started</p>
+    <div id="codeEntryScreen" class="code-entry hidden">
+        <div class="code-card">
+            <div class="code-icon">🔐</div>
+            <h1 class="code-title">LOCK-IN CRM</h1>
+            <p class="code-subtitle">Enter your access code to continue</p>
             <input type="text" id="codeInput" class="code-input" placeholder="ENTER CODE" maxlength="20">
-            <button onclick="saveClientCode()" class="code-submit">Continue</button>
-            <p style="margin-top: 1rem; font-size: 0.75rem; color: #999;">
-                Don't have a code? Contact your administrator
-            </p>
+            <button onclick="saveClientCode()" class="code-btn">LET'S GO </button>
         </div>
     </div>
 
-    <!-- Loading Screen -->
-    <div id="loading" class="loading">
-        <h2>🔄 Loading CRM...</h2>
+    <div id="loading" class="loading-screen">
+        <div class="loading-content">
+            <div class="loading-icon"></div>
+            <div class="loading-text">Loading your empire...</div>
+        </div>
     </div>
 
-    <!-- Main App -->
-    <div id="mainApp" class="container hidden">
-        <!-- Header -->
-        <div class="header">
-            <div class="header-top">
-                <h1>📊 CRM Pro</h1>
+    <div id="mainApp" class="hidden">
+        <header class="header">
+            <div class="header-content">
+                <div>
+                    <div class="logo">LOCK-IN</div>
+                    <div id="clientBadge" class="client-info">Loading...</div>
+                </div>
                 <button onclick="logout()" class="logout-btn">Logout</button>
             </div>
-            <div class="client-badge" id="clientBadge">Loading...</div>
+        </header>
+
+        <div id="topBanner" class="banner">
+            <span class="banner-text">💼 NEW BIZZ UPDATE? ADD QUICKLY!</span>
+            <button onclick="dismissBanner()" class="banner-close">✕</button>
         </div>
 
-        <!-- Navigation -->
-        <div class="nav-tabs">
-            <button class="nav-tab active" onclick="switchTab('dashboard')">📊 Dashboard</button>
-            <button class="nav-tab" onclick="switchTab('contacts')">👥 Contacts</button>
-            <button class="nav-tab" onclick="switchTab('tasks')">✅ Tasks</button>
-            <button class="nav-tab" onclick="switchTab('integrations')">🔗 Integrations</button>
-        </div>
+        <main class="main-content">
+            <div class="container">
+                <div class="quote-card">
+                    <div class="quote-text" id="quoteText"></div>
+                    <div class="quote-author" id="quoteAuthor"></div>
+                </div>
 
-        <!-- Integrations Tab -->
-        <div id="integrationsTab" class="hidden">
-            <div class="card">
-                <h2 style="margin-bottom: 1rem; color: #667eea;">🔗 Connect Your Apps</h2>
-                <p style="color: #666; margin-bottom: 1.5rem;">
-                    Connect your Google account to unlock powerful features
-                </p>
-                
-                <div id="googleNotConnected">
-                    <div style="background: #f0f7ff; border: 2px solid #667eea; padding: 1.5rem; border-radius: 1rem; margin-bottom: 1rem;">
-                        <h3 style="color: #667eea; margin-bottom: 0.75rem;">📧 Gmail Integration</h3>
-                        <ul style="color: #666; margin-left: 1.5rem; margin-bottom: 1rem;">
-                            <li>Send emails directly from CRM</li>
-                            <li>Auto-log sent emails</li>
-                            <li>Track email opens</li>
-                            <li>Quick email templates</li>
-                        </ul>
-                        <h3 style="color: #667eea; margin-bottom: 0.75rem;">📅 Calendar Sync</h3>
-                        <ul style="color: #666; margin-left: 1.5rem; margin-bottom: 1rem;">
-                            <li>Schedule follow-ups in Google Calendar</li>
-                            <li>Get calendar reminders</li>
-                            <li>Sync meetings automatically</li>
-                        </ul>
-                        <h3 style="color: #667eea; margin-bottom: 0.75rem;">👥 Contacts Import</h3>
-                        <ul style="color: #666; margin-left: 1.5rem; margin-bottom: 1rem;">
-                            <li>Import contacts from Google Contacts</li>
-                            <li>Two-way sync</li>
-                            <li>Keep everything up to date</li>
-                        </ul>
-                    </div>
-                    
-                    <button onclick="connectGoogle()" class="action-btn btn-primary" style="width: 100%; padding: 1.25rem; font-size: 1.125rem;">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 0.5rem;">
-                            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
-                            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
-                            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
-                            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
-                        </svg>
-                        Connect Google Account
-                    </button>
-                    
-                    <p style="text-align: center; color: #999; font-size: 0.875rem; margin-top: 1rem;">
-                        ⚠️ Optional - Your CRM works great without Google too!
-                    </p>
-                </div>
-                
-                <div id="googleConnected" class="hidden">
-                    <div style="background: #d1fae5; border: 2px solid #10b981; padding: 1.5rem; border-radius: 1rem; margin-bottom: 1rem;">
-                        <h3 style="color: #065f46; margin-bottom: 0.5rem;">✅ Google Account Connected</h3>
-                        <p style="color: #065f46; margin-bottom: 1rem;" id="googleEmail">Loading...</p>
-                        
-                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem;">
-                            <button onclick="importGoogleContacts()" class="action-btn btn-primary">
-                                📥 Import Contacts
-                            </button>
-                            <button onclick="openGmailCompose()" class="action-btn btn-success">
-                                📧 Send Email
-                            </button>
-                            <button onclick="syncToCalendar()" class="action-btn btn-warning">
-                                📅 Sync Calendar
-                            </button>
-                            <button onclick="disconnectGoogle()" class="action-btn btn-danger">
-                                🔌 Disconnect
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div id="importResults" class="hidden" style="background: #f0f0f0; padding: 1rem; border-radius: 0.5rem; margin-top: 1rem;">
-                        <strong>Import Results:</strong>
-                        <div id="importStatus" style="margin-top: 0.5rem;"></div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Quick Email Templates -->
-            <div class="card">
-                <h2 style="margin-bottom: 1rem; color: #667eea;">📧 Email Templates</h2>
-                <div style="display: grid; gap: 0.75rem;">
-                    <button onclick="useEmailTemplate('intro')" class="action-btn btn-secondary" style="text-align: left; padding: 1rem;">
-                        <strong>👋 Introduction Email</strong><br>
-                        <small style="color: #666;">First contact with new lead</small>
-                    </button>
-                    <button onclick="useEmailTemplate('followup')" class="action-btn btn-secondary" style="text-align: left; padding: 1rem;">
-                        <strong>⏰ Follow-up Email</strong><br>
-                        <small style="color: #666;">Check in after previous contact</small>
-                    </button>
-                    <button onclick="useEmailTemplate('proposal')" class="action-btn btn-secondary" style="text-align: left; padding: 1rem;">
-                        <strong>📄 Proposal Email</strong><br>
-                        <small style="color: #666;">Send your offer/proposal</small>
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Dashboard Tab -->
-        <div id="dashboardTab">
-            <div class="dashboard">
-                <h2>📊 Overview</h2>
                 <div class="stats-grid">
                     <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-icon"></div>
+                            <div class="stat-badge">TOTAL</div>
+                        </div>
                         <div class="stat-value" id="totalLeads">0</div>
                         <div class="stat-label">Total Leads</div>
                     </div>
+
                     <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-icon"></div>
+                            <div class="stat-badge">WEEK</div>
+                        </div>
                         <div class="stat-value" id="newThisWeek">0</div>
-                        <div class="stat-label">New This Week</div>
+                        <div class="stat-label">Leads This Week</div>
                     </div>
+
                     <div class="stat-card">
-                        <div class="stat-value" id="converted">0</div>
-                        <div class="stat-label">Converted</div>
+                        <div class="stat-header">
+                            <div class="stat-icon"></div>
+                            <div class="stat-badge">REVENUE</div>
+                        </div>
+                        <div class="stat-value" id="totalRevenue">$0</div>
+                        <div class="stat-label">Total Revenue</div>
                     </div>
+
                     <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-icon"></div>
+                            <div class="stat-badge">WIN RATE</div>
+                        </div>
                         <div class="stat-value" id="conversionRate">0%</div>
-                        <div class="stat-label">Win Rate</div>
+                        <div class="stat-label">Conversion Rate</div>
                     </div>
                 </div>
-                
-                <h3 style="margin-bottom: 0.75rem; color: #667eea;">📈 Pipeline</h3>
-                <div class="pipeline-section" id="pipelineStats"></div>
-                
-                <div style="background: #fff3cd; padding: 1rem; border-radius: 0.5rem; margin-top: 1rem;">
-                    <strong>⚠️ Follow-ups Due Today:</strong>
-                    <div id="dueTasks" style="margin-top: 0.5rem;">Loading...</div>
+
+                <div class="section-card">
+                    <h2 class="section-title"><span></span> Your Leads</h2>
+                    
+                    <div class="filter-bar">
+                        <input type="text" id="searchLeads" class="form-input" placeholder=" Search leads..." 
+                               style="flex: 1; min-width: 200px;" onkeyup="filterLeads()">
+                        <select id="filterStatus" class="form-input" style="width: 200px;" onchange="filterLeads()">
+                            <option value="">All Statuses</option>
+                            <option value="New Lead"> New Lead</option>
+                            <option value="Contacted"> Contacted</option>
+                            <option value="Qualified"> Qualified</option>
+                            <option value="Negotiating"> Negotiating</option>
+                            <option value="Converted"> Converted</option>
+                            <option value="Lost"> Lost</option>
+                        </select>
+                    </div>
+
+                    <div class="table-container">
+                        <table class="leads-table">
+                            <thead>
+                                <tr>
+                                    <th>NAME</th>
+                                    <th>EMAIL</th>
+                                    <th>PHONE</th>
+                                    <th>COMPANY</th>
+                                    <th>STATUS</th>
+                                    <th>VALUE</th>
+                                    <th>FOLLOW-UP</th>
+                                </tr>
+                            </thead>
+                            <tbody id="leadsTableBody">
+                                <tr>
+                                    <td colspan="7" style="text-align: center; padding: 80px 20px;">
+                                        <div style="font-size: 64px; margin-bottom: 16px;"></div>
+                                        <div style="font-size: 20px; font-weight: 700; color: #ffffff; margin-bottom: 8px;">
+                                            Ready to lock in?
+                                        </div>
+                                        <div style="color: #aaaaaa; margin-bottom: 24px;">
+                                            Add your first lead using the Quick Add box →
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
-        </div>
+        </main>
 
-        <!-- Contacts Tab -->
-        <div id="contactsTab" class="hidden">
-            <div class="card">
-                <div class="search-bar">
-                    <span class="search-icon">🔍</span>
-                    <input type="text" id="searchInput" placeholder="Search contacts...">
+        <div class="floating-add">
+            <div class="floating-title">⚡ Quick Add Lead</div>
+            <form id="quickAddForm">
+                <div class="form-group">
+                    <input type="text" id="quickName" class="form-input" placeholder="Name" required>
                 </div>
-                <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem;">
-                    <button onclick="filterByStatus('all')" class="action-btn btn-primary" style="flex: 1;">All</button>
-                    <button onclick="filterByStatus('New Lead')" class="action-btn btn-secondary" style="flex: 1;">New</button>
-                    <button onclick="filterByStatus('Contacted')" class="action-btn btn-secondary" style="flex: 1;">Contacted</button>
+                <div class="form-group">
+                    <input type="email" id="quickEmail" class="form-input" placeholder="Email">
                 </div>
-            </div>
-            <div id="contactsList"></div>
+                <div class="form-group">
+                    <input type="tel" id="quickPhone" class="form-input" placeholder="Phone">
+                </div>
+                <button type="submit" class="add-btn">Add Lead</button>
+            </form>
         </div>
-
-        <!-- Tasks Tab -->
-        <div id="tasksTab" class="hidden">
-            <div class="card">
-                <h2 style="margin-bottom: 1rem; color: #667eea;">✅ Follow-up Tasks</h2>
-                <div id="tasksList"></div>
-            </div>
-        </div>
-
-        <!-- FAB -->
-        <button class="fab" onclick="showAddModal()">+</button>
     </div>
 
-    <!-- Add/Edit Contact Modal -->
-    <div id="contactModal" class="modal">
+    <div id="contactModal" class="modal-backdrop hidden">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 id="modalTitle">➕ Add Contact</h2>
-                <button onclick="closeModal()" class="close-modal">✕</button>
+                <h2 class="modal-title" id="modalTitle">Add Contact</h2>
+                <button onclick="closeModal()" class="modal-close">✕</button>
             </div>
             <div class="modal-body">
                 <form id="contactForm">
                     <div class="form-group">
-                        <label>Name *</label>
-                        <input type="text" id="nameInput" required>
+                        <label class="form-label">Name *</label>
+                        <input type="text" id="nameInput" class="form-input" required>
                     </div>
                     <div class="form-row">
                         <div class="form-group">
-                            <label>Phone</label>
-                            <input type="tel" id="phoneInput">
+                            <label class="form-label">Phone</label>
+                            <input type="tel" id="phoneInput" class="form-input">
                         </div>
                         <div class="form-group">
-                            <label>Email</label>
-                            <input type="email" id="emailInput">
+                            <label class="form-label">Email</label>
+                            <input type="email" id="emailInput" class="form-input">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label>Company</label>
-                        <input type="text" id="companyInput">
+                        <label class="form-label">Company</label>
+                        <input type="text" id="companyInput" class="form-input">
                     </div>
                     <div class="form-row">
                         <div class="form-group">
-                            <label>Status</label>
-                            <select id="statusInput">
-                                <option value="New Lead">🆕 New Lead</option>
-                                <option value="Contacted">📞 Contacted</option>
-                                <option value="Qualified">✅ Qualified</option>
-                                <option value="Negotiating">💰 Negotiating</option>
-                                <option value="Converted">🎉 Converted</option>
-                                <option value="Lost">❌ Lost</option>
+                            <label class="form-label">Status</label>
+                            <select id="statusInput" class="form-input">
+                                <option value="New Lead"> New Lead</option>
+                                <option value="Contacted"> Contacted</option>
+                                <option value="Qualified"> Qualified</option>
+                                <option value="Negotiating"> Negotiating</option>
+                                <option value="Converted"> Converted</option>
+                                <option value="Lost"> Lost</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>Deal Value</label>
-                            <input type="number" id="valueInput" placeholder="$">
+                            <label class="form-label">Deal Value</label>
+                            <input type="number" id="valueInput" class="form-input" placeholder="0">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label>Source</label>
-                        <select id="sourceInput">
+                        <label class="form-label">Source</label>
+                        <select id="sourceInput" class="form-input">
                             <option value="">Select source</option>
                             <option value="Instagram">Instagram</option>
                             <option value="Facebook">Facebook</option>
@@ -738,292 +1010,99 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label>Notes</label>
-                        <textarea id="notesInput" rows="3"></textarea>
+                        <label class="form-label">Follow-up Date</label>
+                        <input type="date" id="followupInput" class="form-input">
                     </div>
-                    <button type="submit" class="action-btn btn-primary" style="width: 100%; padding: 1rem;">
-                        💾 Save Contact
-                    </button>
+                    <div class="form-group">
+                        <label class="form-label">Notes</label>
+                        <textarea id="notesInput" class="form-input"></textarea>
+                    </div>
+                    <div class="modal-actions">
+                        <button type="submit" class="add-btn" style="flex: 1;">Save Contact</button>
+                        <button type="button" onclick="deleteContact()" class="add-btn btn-danger" style="flex: 1;">Delete</button>
+                    </div>
                 </form>
             </div>
         </div>
     </div>
-
-    <!-- Log Activity Modal -->
-    <div id="activityModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>📝 Log Activity</h2>
-                <button onclick="closeActivityModal()" class="close-modal">✕</button>
-            </div>
-            <div class="modal-body">
-                <form id="activityForm">
-                    <div class="form-group">
-                        <label>Activity Type</label>
-                        <select id="activityType">
-                            <option value="Email Sent">📧 Email Sent</option>
-                            <option value="Call Made">📞 Call Made</option>
-                            <option value="Meeting">🤝 Meeting</option>
-                            <option value="Proposal Sent">📄 Proposal Sent</option>
-                            <option value="Follow-up">⏰ Follow-up</option>
-                            <option value="Note">📝 Note</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Details</label>
-                        <textarea id="activityDetails" rows="3" required></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label>Next Follow-up Date (Optional)</label>
-                        <input type="date" id="followupDate">
-                    </div>
-                    <button type="submit" class="action-btn btn-success" style="width: 100%; padding: 1rem;">
-                        ✅ Log Activity
-                    </button>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- Gmail Compose Modal -->
-    <div id="gmailModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>📧 Send Email via Gmail</h2>
-                <button onclick="closeGmailModal()" class="close-modal">✕</button>
-            </div>
-            <div class="modal-body">
-                <form id="gmailForm">
-                    <div class="form-group">
-                        <label>To:</label>
-                        <input type="email" id="emailTo" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Subject:</label>
-                        <input type="text" id="emailSubject" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Message:</label>
-                        <textarea id="emailBody" rows="8" required></textarea>
-                    </div>
-                    <button type="submit" class="action-btn btn-success" style="width: 100%; padding: 1rem;">
-                        📤 Send Email
-                    </button>
-                    <p style="text-align: center; color: #999; font-size: 0.875rem; margin-top: 0.5rem;">
-                        This will open Gmail with your message pre-filled
-                    </p>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
-    <script>
-        const SUPABASE_URL = 'https://zwhbeigmycnlvaxwlytn.supabase.co';
-        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp3aGJlaWdteWNubHZheHdseXRuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjIwMzQzNDQsImV4cCI6MjA3NzYxMDM0NH0.PQOSG4MiX7fvyo_RUUfnI6hNsUI17GxNA6GOYG2HSPc';
+ <script>
+        const config = {
+            url: 'https://zwhbeigmycnlvaxwlytn.supabase.co',
+            key: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp3aGJlaWdteWNubHZheHdseXRuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjIwMzQzNDQsImV4cCI6MjA3NzYxMDM0NH0.PQOSG4MiX7fvyo_RUUfnI6hNsUI17GxNA6GOYG2HSPc'
+        };
         
-        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        const supabase = window.supabase.createClient(config.url, config.key);
         
         let clientCode = null;
         let contacts = [];
         let currentEditId = null;
-        let currentActivityContactId = null;
-        let currentFilter = 'all';
-        let googleAccessToken = null;
-        let googleUserEmail = null;
 
-        // Google OAuth Configuration
-        const GOOGLE_CLIENT_ID = 'YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com';
-        // ⚠️ NOTE: User needs to create this in Google Cloud Console
-        // Instructions will be provided
+        const quotes = [
+            { text: "The grind never stops. Your future self will thank you.", author: "Anonymous Hustler" },
+            { text: "Success is not given, it's earned. Keep going.", author: "Unknown" },
+            { text: "Don't watch the clock; do what it does. Keep going.", author: "Sam Levenson" },
+            { text: "The only way to do great work is to love what you do.", author: "Steve Jobs" },
+            { text: "Your limitation—it's only your imagination.", author: "Unknown" },
+            { text: "Push yourself, because no one else is going to do it for you.", author: "Unknown" },
+            { text: "Great things never come from comfort zones.", author: "Unknown" },
+            { text: "Dream it. Wish it. Do it.", author: "Unknown" },
+            { text: "Success doesn't just find you. You have to go out and get it.", author: "Unknown" },
+            { text: "The harder you work for something, the greater you'll feel when you achieve it.", author: "Unknown" },
+            { text: "Dream bigger. Do bigger.", author: "Unknown" },
+            { text: "Don't stop when you're tired. Stop when you're done.", author: "Unknown" },
+            { text: "Wake up with determination. Go to bed with satisfaction.", author: "Unknown" },
+            { text: "Do something today that your future self will thank you for.", author: "Sean Patrick Flanery" },
+            { text: "Little things make big days.", author: "Unknown" },
+            { text: "It's going to be hard, but hard does not mean impossible.", author: "Unknown" },
+            { text: "Don't wait for opportunity. Create it.", author: "Unknown" },
+            { text: "The key to success is to focus on goals, not obstacles.", author: "Unknown" },
+            { text: "Dream it. Believe it. Build it.", author: "Unknown" }
+        ];
 
-        // Check Google connection status
-        function checkGoogleConnection() {
-            googleAccessToken = localStorage.getItem('googleAccessToken');
-            googleUserEmail = localStorage.getItem('googleUserEmail');
+        function showToast(message, type = 'success') {
+            const existingToast = document.querySelector('.toast');
+            if (existingToast) existingToast.remove();
             
-            if (googleAccessToken && googleUserEmail) {
-                document.getElementById('googleNotConnected').classList.add('hidden');
-                document.getElementById('googleConnected').classList.remove('hidden');
-                document.getElementById('googleEmail').textContent = `Connected as: ${googleUserEmail}`;
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `<div class="toast-message">${message}</div>`;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.animation = 'slideInRight 0.3s ease-out reverse';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        function displayQuote() {
+            const quote = quotes[Math.floor(Math.random() * quotes.length)];
+            document.getElementById('quoteText').textContent = `"${quote.text}"`;
+            document.getElementById('quoteAuthor').textContent = `— ${quote.author}`;
+        }
+
+        function dismissBanner() {
+            document.getElementById('topBanner').style.display = 'none';
+            localStorage.setItem('bannerDismissed', 'true');
+        }
+
+        function checkBanner() {
+            const dismissed = localStorage.getItem('bannerDismissed');
+            if (dismissed === 'true') {
+                const banner = document.getElementById('topBanner');
+                if (banner) banner.style.display = 'none';
             }
         }
 
-        // Connect Google Account
-        function connectGoogle() {
-            alert('📋 Google Setup Required!\n\nTo enable Google features:\n\n1. Go to console.cloud.google.com\n2. Create a project\n3. Enable Gmail API & Google People API\n4. Create OAuth 2.0 credentials\n5. Add your app URL to authorized origins\n6. Copy Client ID\n7. Paste it in the code where it says "YOUR_GOOGLE_CLIENT_ID"\n\nFor now, we\'ll use a simpler method - direct Gmail/Calendar links!');
-            
-            // Alternative: Use direct links (works without OAuth)
-            showSimpleGoogleIntegration();
+        function validateEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
         }
 
-        function showSimpleGoogleIntegration() {
-            // Mark as "connected" using simple method
-            localStorage.setItem('googleAccessToken', 'simple_mode');
-            localStorage.setItem('googleUserEmail', 'Using direct links');
-            
-            document.getElementById('googleNotConnected').classList.add('hidden');
-            document.getElementById('googleConnected').classList.remove('hidden');
-            document.getElementById('googleEmail').textContent = '✅ Google Quick Actions Enabled';
-            
-            alert('✅ Google integration activated!\n\nYou can now:\n• Send emails via Gmail\n• Add events to Calendar\n• Use quick templates');
+        function validatePhone(phone) {
+            const re = /^[\d\s\-\+\(\)]+$/;
+            return phone.length >= 10 && re.test(phone);
         }
 
-        function disconnectGoogle() {
-            if (confirm('Disconnect Google account?')) {
-                localStorage.removeItem('googleAccessToken');
-                localStorage.removeItem('googleUserEmail');
-                location.reload();
-            }
-        }
-
-        // Import Google Contacts (Simple method)
-        async function importGoogleContacts() {
-            alert('📱 Import Contacts:\n\nMethod 1: Manual\n1. Go to contacts.google.com\n2. Select contacts\n3. Export as CSV\n4. We\'ll add CSV import feature\n\nMethod 2: Share\nUse the "Share" feature from your Contacts app to add them one by one!\n\nFull API import requires OAuth setup.');
-        }
-
-        // Open Gmail Compose
-        function openGmailCompose(contactId = null) {
-            let toEmail = '';
-            let subject = '';
-            let body = '';
-            
-            if (contactId) {
-                const contact = contacts.find(c => c.id === contactId);
-                toEmail = contact.email || '';
-                subject = `Following up - ${contact.name}`;
-                body = `Hi ${contact.name},\n\nI wanted to follow up on our conversation.\n\nBest regards`;
-            }
-            
-            document.getElementById('emailTo').value = toEmail;
-            document.getElementById('emailSubject').value = subject;
-            document.getElementById('emailBody').value = body;
-            document.getElementById('gmailModal').classList.add('active');
-        }
-
-        function closeGmailModal() {
-            document.getElementById('gmailModal').classList.remove('active');
-        }
-
-        // Gmail Form Submit
-        document.getElementById('gmailForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            
-            const to = document.getElementById('emailTo').value;
-            const subject = document.getElementById('emailSubject').value;
-            const body = document.getElementById('emailBody').value;
-            
-            // Open Gmail with pre-filled message
-            const gmailUrl = `https://mail.google.com/mail/?view=cm&to=${encodeURIComponent(to)}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-            
-            window.open(gmailUrl, '_blank');
-            
-            // Log the email activity
-            if (currentActivityContactId) {
-                logEmailActivity(currentActivityContactId, subject);
-            }
-            
-            closeGmailModal();
-            alert('✅ Gmail opened! After sending, the email will be logged in your CRM.');
-        });
-
-        async function logEmailActivity(contactId, subject) {
-            const contact = contacts.find(c => c.id === contactId);
-            const activities = contact.activities ? JSON.parse(contact.activities) : [];
-            
-            activities.push({
-                type: 'Email Sent',
-                details: `Subject: ${subject}`,
-                date: new Date().toISOString()
-            });
-            
-            await supabase
-                .from('contacts')
-                .update({ activities: JSON.stringify(activities) })
-                .eq('id', contactId);
-            
-            await loadData();
-        }
-
-        // Sync to Google Calendar
-        function syncToCalendar() {
-            const tasksWithDates = contacts.filter(c => c.followup_date);
-            
-            if (tasksWithDates.length === 0) {
-                alert('No follow-up tasks to sync!');
-                return;
-            }
-            
-            alert(`📅 Syncing ${tasksWithDates.length} follow-ups to Google Calendar...\n\nFor each contact, we'll open Google Calendar with the event pre-filled. You can customize and save.`);
-            
-            tasksWithDates.slice(0, 3).forEach((contact, i) => {
-                setTimeout(() => {
-                    addToGoogleCalendar(contact);
-                }, i * 2000); // Stagger by 2 seconds
-            });
-        }
-
-        function addToGoogleCalendar(contact) {
-            const title = `Follow up: ${contact.name}`;
-            const details = `Company: ${contact.company || 'N/A'}\nPhone: ${contact.phone || 'N/A'}\nEmail: ${contact.email || 'N/A'}\nStatus: ${contact.status}`;
-            const date = contact.followup_date.replace(/-/g, '');
-            
-            const calendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&details=${encodeURIComponent(details)}&dates=${date}T100000/${date}T110000`;
-            
-            window.open(calendarUrl, '_blank');
-        }
-
-        // Email Templates
-        function useEmailTemplate(type) {
-            const templates = {
-                intro: {
-                    subject: 'Great connecting with you!',
-                    body: `Hi [Name],\n\nIt was great connecting with you! I wanted to reach out and introduce [Your Company/Service].\n\nWe specialize in helping businesses like yours [key benefit].\n\nWould you be open to a quick 15-minute call this week?\n\nBest regards,\n[Your Name]`
-                },
-                followup: {
-                    subject: 'Following up on our conversation',
-                    body: `Hi [Name],\n\nI wanted to follow up on our previous conversation about [topic].\n\nHave you had a chance to think about [question/proposal]?\n\nI'd love to hear your thoughts and answer any questions you might have.\n\nLooking forward to hearing from you!\n\nBest regards,\n[Your Name]`
-                },
-                proposal: {
-                    subject: 'Proposal for [Project Name]',
-                    body: `Hi [Name],\n\nThank you for your interest in working together!\n\nI've put together a proposal that outlines:\n• Scope of work\n• Timeline\n• Investment\n\n[Attach proposal or include details]\n\nI'm excited about the possibility of partnering with you on this project.\n\nWhen would be a good time to discuss?\n\nBest regards,\n[Your Name]`
-                }
-            };
-            
-            const template = templates[type];
-            document.getElementById('emailSubject').value = template.subject;
-            document.getElementById('emailBody').value = template.body;
-            document.getElementById('gmailModal').classList.add('active');
-            
-            alert('📝 Template loaded! Customize it for your contact and send.');
-        }
-
-        // Check if shared data exists (for Quick Share)
-        function checkSharedData() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const sharedText = urlParams.get('text');
-            const sharedTitle = urlParams.get('title');
-            
-            if (sharedText || sharedTitle) {
-                // Parse shared data
-                const name = sharedTitle || '';
-                const text = sharedText || '';
-                
-                // Try to extract phone/email
-                const phoneMatch = text.match(/(\+?\d[\d\s-]{7,})/);
-                const emailMatch = text.match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/);
-                
-                // Pre-fill form
-                setTimeout(() => {
-                    document.getElementById('nameInput').value = name;
-                    if (phoneMatch) document.getElementById('phoneInput').value = phoneMatch[0];
-                    if (emailMatch) document.getElementById('emailInput').value = emailMatch[0];
-                    showAddModal();
-                }, 1000);
-            }
-        }
-
-        // Initialize
         async function init() {
             clientCode = localStorage.getItem('clientCode');
             
@@ -1046,12 +1125,13 @@
                 
                 document.getElementById('loading').classList.add('hidden');
                 document.getElementById('mainApp').classList.remove('hidden');
-                document.getElementById('clientBadge').textContent = `${client.business_name || client.client_name} (${client.client_code})`;
+                document.getElementById('clientBadge').textContent = `${client.business_name || client.client_name} • ${client.client_code}`;
                 
+                displayQuote();
+                checkBanner();
                 await loadData();
-                checkSharedData();
             } catch (err) {
-                alert('Invalid client code. Please re-enter.');
+                showToast('Invalid client code. Please re-enter.', 'error');
                 logout();
             }
         }
@@ -1059,7 +1139,7 @@
         function saveClientCode() {
             const code = document.getElementById('codeInput').value.trim().toUpperCase();
             if (!code) {
-                alert('Please enter a code');
+                showToast('Please enter a code', 'error');
                 return;
             }
             localStorage.setItem('clientCode', code);
@@ -1079,222 +1159,219 @@
                 .order('created_at', { ascending: false });
             
             if (error) {
-                console.error('Error loading contacts:', error);
+                showToast('Error loading data', 'error');
                 return;
             }
             
             contacts = data || [];
             renderDashboard();
-            renderContacts();
-            renderTasks();
+            renderTable();
         }
 
         function renderDashboard() {
             const total = contacts.length;
             const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
             const newThisWeek = contacts.filter(c => new Date(c.created_at) > weekAgo).length;
+            
+            const totalRevenue = contacts
+                .filter(c => c.status === 'Converted' && c.value)
+                .reduce((sum, c) => sum + parseFloat(c.value || 0), 0);
+            
             const converted = contacts.filter(c => c.status === 'Converted').length;
             const convRate = total > 0 ? Math.round((converted / total) * 100) : 0;
             
             document.getElementById('totalLeads').textContent = total;
             document.getElementById('newThisWeek').textContent = newThisWeek;
-            document.getElementById('converted').textContent = converted;
+            document.getElementById('totalRevenue').textContent = '$' + totalRevenue.toLocaleString();
             document.getElementById('conversionRate').textContent = convRate + '%';
-            
-            const statuses = ['New Lead', 'Contacted', 'Qualified', 'Negotiating', 'Converted', 'Lost'];
-            const emojis = {'New Lead': '🆕', 'Contacted': '📞', 'Qualified': '✅', 'Negotiating': '💰', 'Converted': '🎉', 'Lost': '❌'};
-            
-            const pipeline = statuses.map(status => {
-                const count = contacts.filter(c => c.status === status).length;
-                return `
-                    <div class="pipeline-item">
-                        <span>${emojis[status]} ${status}</span>
-                        <span class="pipeline-count">${count}</span>
-                    </div>
-                `;
-            }).join('');
-            
-            document.getElementById('pipelineStats').innerHTML = pipeline;
         }
 
-        function renderContacts() {
+        function renderTable() {
+            const tbody = document.getElementById('leadsTableBody');
+            
+            if (contacts.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="7" style="text-align: center; padding: 80px 20px;">
+                            <div style="font-size: 64px; margin-bottom: 16px;"></div>
+                            <div style="font-size: 20px; font-weight: 700; color: #ffffff; margin-bottom: 8px;">
+                                Ready to lock in?
+                            </div>
+                            <div style="color: #aaaaaa; margin-bottom: 24px;">
+                                Add your first lead using the Quick Add box →
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = contacts.map(contact => {
+                const statusClass = contact.status.toLowerCase().replace(' ', '');
+                const followupDate = contact.followup_date 
+                    ? new Date(contact.followup_date).toLocaleDateString() 
+                    : '-';
+                const daysUntil = contact.followup_date 
+                    ? Math.floor((new Date(contact.followup_date) - new Date()) / (1000 * 60 * 60 * 24))
+                    : null;
+                
+                let followupDisplay = followupDate;
+                if (daysUntil !== null) {
+                    if (daysUntil < 0) {
+                        followupDisplay = `${followupDate} (${Math.abs(daysUntil)} days ago)`;
+                    } else if (daysUntil === 0) {
+                        followupDisplay = `${followupDate} (Today!)`;
+                    } else {
+                        followupDisplay = `${followupDate} (${daysUntil} days)`;
+                    }
+                }
+
+                return `
+                    <tr onclick="editContact('${contact.id}')">
+                        <td>${contact.name}</td>
+                        <td>${contact.email || '-'}</td>
+                        <td>${contact.phone || '-'}</td>
+                        <td>${contact.company || '-'}</td>
+                        <td><span class="status-badge status-${statusClass}">${contact.status}</span></td>
+                        <td>${contact.value ? '$' + parseFloat(contact.value).toLocaleString() : '-'}</td>
+                        <td>${followupDisplay}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function renderTableWithData(data) {
+            const tbody = document.getElementById('leadsTableBody');
+            
+            if (data.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="7" style="text-align: center; padding: 60px; color: #aaaaaa;">
+                            No leads match your filters 🔍
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = data.map(contact => {
+                const statusClass = contact.status.toLowerCase().replace(' ', '');
+                const followupDate = contact.followup_date 
+                    ? new Date(contact.followup_date).toLocaleDateString() 
+                    : '-';
+                const daysUntil = contact.followup_date 
+                    ? Math.floor((new Date(contact.followup_date) - new Date()) / (1000 * 60 * 60 * 24))
+                    : null;
+                
+                let followupDisplay = followupDate;
+                if (daysUntil !== null) {
+                    if (daysUntil < 0) {
+                        followupDisplay = `${followupDate} (${Math.abs(daysUntil)} days ago)`;
+                    } else if (daysUntil === 0) {
+                        followupDisplay = `${followupDate} (Today!)`;
+                    } else {
+                        followupDisplay = `${followupDate} (${daysUntil} days)`;
+                    }
+                }
+
+                return `
+                    <tr onclick="editContact('${contact.id}')">
+                        <td>${contact.name}</td>
+                        <td>${contact.email || '-'}</td>
+                        <td>${contact.phone || '-'}</td>
+                        <td>${contact.company || '-'}</td>
+                        <td><span class="status-badge status-${statusClass}">${contact.status}</span></td>
+                        <td>${contact.value ? '$' + parseFloat(contact.value).toLocaleString() : '-'}</td>
+                        <td>${followupDisplay}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function filterLeads() {
+            const searchTerm = document.getElementById('searchLeads').value.toLowerCase();
+            const statusFilter = document.getElementById('filterStatus').value;
+            
             let filtered = contacts;
             
-            if (currentFilter !== 'all') {
-                filtered = contacts.filter(c => c.status === currentFilter);
-            }
-            
-            const searchTerm = document.getElementById('searchInput')?.value.toLowerCase();
             if (searchTerm) {
                 filtered = filtered.filter(c => 
                     c.name.toLowerCase().includes(searchTerm) ||
+                    (c.email && c.email.toLowerCase().includes(searchTerm)) ||
                     (c.company && c.company.toLowerCase().includes(searchTerm)) ||
                     (c.phone && c.phone.includes(searchTerm))
                 );
             }
             
-            if (filtered.length === 0) {
-                document.getElementById('contactsList').innerHTML = '<div class="empty-state">No contacts found</div>';
+            if (statusFilter) {
+                filtered = filtered.filter(c => c.status === statusFilter);
+            }
+            
+            renderTableWithData(filtered);
+        }
+
+        document.getElementById('quickAddForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const btn = e.target.querySelector('.add-btn');
+            const originalText = btn.textContent;
+            btn.classList.add('btn-loading');
+            btn.textContent = '';
+            
+            const email = document.getElementById('quickEmail').value;
+            const phone = document.getElementById('quickPhone').value;
+
+            if (email && !validateEmail(email)) {
+                showToast('Please enter a valid email', 'error');
+                btn.classList.remove('btn-loading');
+                btn.textContent = originalText;
+                return;
+            }
+
+            if (phone && !validatePhone(phone)) {
+                showToast('Please enter a valid phone number', 'error');
+                btn.classList.remove('btn-loading');
+                btn.textContent = originalText;
                 return;
             }
             
-            document.getElementById('contactsList').innerHTML = filtered.map(contact => {
-                const activities = contact.activities ? JSON.parse(contact.activities) : [];
-                const emailCount = activities.filter(a => a.type === 'Email Sent').length;
-                const callCount = activities.filter(a => a.type === 'Call Made').length;
-                const lastActivity = activities.length > 0 ? activities[activities.length - 1] : null;
-                const daysAgo = lastActivity ? Math.floor((Date.now() - new Date(lastActivity.date).getTime()) / (1000 * 60 * 60 * 24)) : null;
+            try {
+                const contactData = {
+                    client_code: clientCode,
+                    name: document.getElementById('quickName').value,
+                    email: email,
+                    phone: phone,
+                    status: 'New Lead',
+                    activities: JSON.stringify([{
+                        type: 'Created',
+                        details: 'Contact created',
+                        date: new Date().toISOString()
+                    }])
+                };
                 
-                return `
-                    <div class="contact-card">
-                        <div class="contact-header">
-                            <div>
-                                <div class="contact-name">${contact.name}</div>
-                                ${contact.company ? `<div class="contact-company">🏢 ${contact.company}</div>` : ''}
-                            </div>
-                            <span class="status-badge status-${contact.status.toLowerCase().replace(' ', '')}">${contact.status}</span>
-                        </div>
-                        
-                        <div class="contact-info">
-                            ${contact.phone ? `<div>📞 ${contact.phone}</div>` : ''}
-                            ${contact.email ? `<div>✉️ ${contact.email}</div>` : ''}
-                            ${contact.value ? `<div>💰 $${contact.value}</div>` : ''}
-                        </div>
-                        
-                        ${activities.length > 0 ? `
-                            <div class="activity-summary">
-                                <strong>📊 Activity</strong>
-                                <div class="activity-row">
-                                    <span>📧 Emails sent:</span><span>${emailCount}</span>
-                                </div>
-                                <div class="activity-row">
-                                    <span>📞 Calls made:</span><span>${callCount}</span>
-                                </div>
-                                ${daysAgo !== null ? `
-                                    <div class="activity-row">
-                                        <span>⏰ Last contact:</span><span>${daysAgo} days ago</span>
-                                    </div>
-                                ` : ''}
-                            </div>
-                        ` : ''}
-                        
-                        ${contact.followup_date ? `
-                            <div class="next-action">
-                                <strong>⚠️ Next Action:</strong><br>
-                                Follow up on ${new Date(contact.followup_date).toLocaleDateString()}
-                            </div>
-                        ` : ''}
-                        
-                        ${activities.length > 0 ? `
-                            <button onclick="toggleHistory('${contact.id}')" class="history-toggle">
-                                Show History (${activities.length})
-                            </button>
-                            <div id="history-${contact.id}" class="history-list hidden">
-                                ${activities.slice(-5).reverse().map(a => `
-                                    <div class="history-item">
-                                        <strong>${a.type}</strong> - ${new Date(a.date).toLocaleDateString()}<br>
-                                        ${a.details}
-                                    </div>
-                                `).join('')}
-                            </div>
-                        ` : ''}
-                        
-                        <div class="contact-actions">
-                            <button onclick="openActivityModal('${contact.id}')" class="action-btn btn-success">
-                                📧 Log Activity
-                            </button>
-                            <button onclick="openGmailCompose('${contact.id}')" class="action-btn btn-primary">
-                                ✉️ Email
-                            </button>
-                            <button onclick="editContact('${contact.id}')" class="action-btn btn-warning">
-                                ✏️ Edit
-                            </button>
-                            <button onclick="deleteContact('${contact.id}')" class="action-btn btn-danger">
-                                🗑️ Delete
-                            </button>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        function renderTasks() {
-            const today = new Date().toISOString().split('T')[0];
-            const dueTasks = contacts.filter(c => c.followup_date && c.followup_date <= today);
-            
-            if (dueTasks.length === 0) {
-                document.getElementById('dueTasks').innerHTML = '<span style="color: #10b981;">✅ All caught up!</span>';
-                document.getElementById('tasksList').innerHTML = '<div class="empty-state">No tasks due</div>';
-                return;
+                const { error } = await supabase
+                    .from('contacts')
+                    .insert([contactData]);
+                
+                if (error) throw error;
+                
+                document.getElementById('quickAddForm').reset();
+                await loadData();
+                showToast(' New lead added!', 'success');
+                
+            } catch (error) {
+                showToast('Error: ' + error.message, 'error');
+            } finally {
+                btn.classList.remove('btn-loading');
+                btn.textContent = originalText;
             }
-            
-            const taskHtml = dueTasks.map(c => `
-                <div style="padding: 0.5rem 0; border-bottom: 1px solid #e0e0e0;">
-                    <strong>${c.name}</strong> ${c.company ? `(${c.company})` : ''}<br>
-                    <small>Follow up: ${new Date(c.followup_date).toLocaleDateString()}</small>
-                </div>
-            `).join('');
-            
-            document.getElementById('dueTasks').innerHTML = taskHtml;
-            
-            document.getElementById('tasksList').innerHTML = dueTasks.map(c => `
-                <div class="contact-card">
-                    <div class="contact-name">${c.name}</div>
-                    ${c.company ? `<div class="contact-company">🏢 ${c.company}</div>` : ''}
-                    <div style="margin: 0.75rem 0;">
-                        <strong>Due:</strong> ${new Date(c.followup_date).toLocaleDateString()}<br>
-                        ${c.phone ? `📞 ${c.phone}` : ''} ${c.email ? `✉️ ${c.email}` : ''}
-                    </div>
-                    <div style="display: flex; gap: 0.5rem;">
-                        <button onclick="openActivityModal('${c.id}')" class="action-btn btn-success" style="flex: 1;">
-                            ✅ Complete
-                        </button>
-                        <button onclick="editContact('${c.id}')" class="action-btn btn-primary" style="flex: 1;">
-                            ✏️ Edit
-                        </button>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function toggleHistory(id) {
-            const el = document.getElementById('history-' + id);
-            el.classList.toggle('hidden');
-        }
-
-        function switchTab(tab) {
-            document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-            event.target.classList.add('active');
-            
-            document.getElementById('dashboardTab').classList.add('hidden');
-            document.getElementById('contactsTab').classList.add('hidden');
-            document.getElementById('tasksTab').classList.add('hidden');
-            document.getElementById('integrationsTab').classList.add('hidden');
-            
-            document.getElementById(tab + 'Tab').classList.remove('hidden');
-            
-            if (tab === 'integrations') {
-                checkGoogleConnection();
-            }
-        }
-
-        function filterByStatus(status) {
-            currentFilter = status;
-            renderContacts();
-        }
-
-        function showAddModal() {
-            currentEditId = null;
-            document.getElementById('modalTitle').textContent = '➕ Add Contact';
-            document.getElementById('contactForm').reset();
-            document.getElementById('contactModal').classList.add('active');
-        }
+        });
 
         function editContact(id) {
             currentEditId = id;
             const contact = contacts.find(c => c.id === id);
             
-            document.getElementById('modalTitle').textContent = '✏️ Edit Contact';
+            document.getElementById('modalTitle').textContent = 'Edit Contact';
             document.getElementById('nameInput').value = contact.name;
             document.getElementById('phoneInput').value = contact.phone || '';
             document.getElementById('emailInput').value = contact.email || '';
@@ -1302,189 +1379,112 @@
             document.getElementById('statusInput').value = contact.status;
             document.getElementById('valueInput').value = contact.value || '';
             document.getElementById('sourceInput').value = contact.source || '';
+            document.getElementById('followupInput').value = contact.followup_date || '';
             document.getElementById('notesInput').value = contact.notes || '';
             
-            document.getElementById('contactModal').classList.add('active');
-        }
-
-        async function changeStatus(id) {
-            const contact = contacts.find(c => c.id === id);
-            const statuses = ['New Lead', 'Contacted', 'Qualified', 'Negotiating', 'Converted', 'Lost'];
-            const currentIndex = statuses.indexOf(contact.status);
-            const nextStatus = statuses[(currentIndex + 1) % statuses.length];
-            
-            if (confirm(`Change status to: ${nextStatus}?`)) {
-                const activities = contact.activities ? JSON.parse(contact.activities) : [];
-                activities.push({
-                    type: 'Status Change',
-                    details: `Changed from ${contact.status} to ${nextStatus}`,
-                    date: new Date().toISOString()
-                });
-                
-                const { error } = await supabase
-                    .from('contacts')
-                    .update({ 
-                        status: nextStatus,
-                        activities: JSON.stringify(activities)
-                    })
-                    .eq('id', id);
-                
-                if (!error) {
-                    await loadData();
-                }
-            }
-        }
-
-        async function deleteContact(id) {
-            if (!confirm('Delete this contact?')) return;
-            
-            const { error } = await supabase
-                .from('contacts')
-                .delete()
-                .eq('id', id);
-            
-            if (!error) {
-                await loadData();
-            }
+            document.getElementById('contactModal').classList.remove('hidden');
         }
 
         function closeModal() {
-            document.getElementById('contactModal').classList.remove('active');
+            document.getElementById('contactModal').classList.add('hidden');
+            currentEditId = null;
+            document.getElementById('contactForm').reset();
         }
 
-        function openActivityModal(id) {
-            currentActivityContactId = id;
-            document.getElementById('activityForm').reset();
-            document.getElementById('activityModal').classList.add('active');
+        async function deleteContact() {
+            if (!currentEditId) return;
+            
+            if (!confirm('Are you sure you want to delete this contact? This cannot be undone.')) {
+                return;
+            }
+
+            try {
+                const { error } = await supabase
+                    .from('contacts')
+                    .delete()
+                    .eq('id', currentEditId);
+                
+                if (error) throw error;
+                
+                showToast('Contact deleted', 'success');
+                closeModal();
+                await loadData();
+            } catch (error) {
+                showToast('Error deleting contact', 'error');
+            }
         }
 
-        function closeActivityModal() {
-            document.getElementById('activityModal').classList.remove('active');
-        }
-
-        // Contact Form Submit
         document.getElementById('contactForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             
-            const contactData = {
-                client_code: clientCode,
-                name: document.getElementById('nameInput').value,
-                phone: document.getElementById('phoneInput').value,
-                email: document.getElementById('emailInput').value,
-                company: document.getElementById('companyInput').value,
-                status: document.getElementById('statusInput').value,
-                value: document.getElementById('valueInput').value || null,
-                source: document.getElementById('sourceInput').value,
-                notes: document.getElementById('notesInput').value,
-                activities: JSON.stringify([{
-                    type: 'Created',
-                    details: 'Contact created',
-                    date: new Date().toISOString()
-                }])
-            };
-            
-            let error;
-            if (currentEditId) {
-                ({ error } = await supabase
-                    .from('contacts')
-                    .update(contactData)
-                    .eq('id', currentEditId));
-            } else {
-                ({ error } = await supabase
-                    .from('contacts')
-                    .insert([contactData]));
+            const btn = e.target.querySelector('.add-btn');
+            const originalText = btn.textContent;
+            btn.classList.add('btn-loading');
+            btn.textContent = '';
+
+            const email = document.getElementById('emailInput').value;
+            const phone = document.getElementById('phoneInput').value;
+
+            if (email && !validateEmail(email)) {
+                showToast('Please enter a valid email', 'error');
+                btn.classList.remove('btn-loading');
+                btn.textContent = originalText;
+                return;
             }
-            
-            if (error) {
-                alert('Error: ' + error.message);
+
+            if (phone && !validatePhone(phone)) {
+                showToast('Please enter a valid phone number', 'error');
+                btn.classList.remove('btn-loading');
+                btn.textContent = originalText;
                 return;
             }
             
-            closeModal();
-            await loadData();
-        });
-
-        // Activity Form Submit
-        document.getElementById('activityForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            const contact = contacts.find(c => c.id === currentActivityContactId);
-            const activities = contact.activities ? JSON.parse(contact.activities) : [];
-            
-            activities.push({
-                type: document.getElementById('activityType').value,
-                details: document.getElementById('activityDetails').value,
-                date: new Date().toISOString()
-            });
-            
-            const updateData = {
-                activities: JSON.stringify(activities)
-            };
-            
-            const followupDate = document.getElementById('followupDate').value;
-            if (followupDate) {
-                updateData.followup_date = followupDate;
-            }
-            
-            const { error } = await supabase
-                .from('contacts')
-                .update(updateData)
-                .eq('id', currentActivityContactId);
-            
-            if (!error) {
-                closeActivityModal();
-                await loadData();
-            }
-        });
-
-        // Search functionality
-        if (document.getElementById('searchInput')) {
-            document.getElementById('searchInput').addEventListener('input', renderContacts);
-        }
-
-        // Handle Web Share Target API (for Quick Share)
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/sw.js').catch(() => {});
-        }
-
-        // Initialize app
-        init();
-    </script>
-    
-    <!-- Service Worker for Share Target (Quick Share Feature) -->
-    <script>
-        // This enables the app to receive shared content
-        if ('share' in navigator) {
-            console.log('Web Share API supported');
-        }
-        
-        // Register manifest for share target
-        const manifestLink = document.createElement('link');
-        manifestLink.rel = 'manifest';
-        manifestLink.href = 'data:application/json,' + encodeURIComponent(JSON.stringify({
-            name: "CRM Pro",
-            short_name: "CRM",
-            start_url: "/",
-            display: "standalone",
-            background_color: "#667eea",
-            theme_color: "#667eea",
-            icons: [{
-                src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect fill='%23667eea' width='100' height='100'/%3E%3Ctext y='75' font-size='80' fill='white' text-anchor='middle' x='50'%3E📊%3C/text%3E%3C/svg%3E",
-                sizes: "512x512",
-                type: "image/svg+xml"
-            }],
-            share_target: {
-                action: "/",
-                method: "GET",
-                enctype: "application/x-www-form-urlencoded",
-                params: {
-                    title: "title",
-                    text: "text",
-                    url: "url"
+            try {
+                const contactData = {
+                    client_code: clientCode,
+                    name: document.getElementById('nameInput').value,
+                    phone: phone,
+                    email: email,
+                    company: document.getElementById('companyInput').value,
+                    status: document.getElementById('statusInput').value,
+                    value: document.getElementById('valueInput').value || null,
+                    source: document.getElementById('sourceInput').value,
+                    followup_date: document.getElementById('followupInput').value || null,
+                    notes: document.getElementById('notesInput').value
+                };
+                
+                let error;
+                if (currentEditId) {
+                    ({ error } = await supabase
+                        .from('contacts')
+                        .update(contactData)
+                        .eq('id', currentEditId));
+                } else {
+                    contactData.activities = JSON.stringify([{
+                        type: 'Created',
+                        details: 'Contact created',
+                        date: new Date().toISOString()
+                    }]);
+                    
+                    ({ error } = await supabase
+                        .from('contacts')
+                        .insert([contactData]));
                 }
+                
+                if (error) throw error;
+                
+                showToast('Contact saved', 'success');
+                closeModal();
+                await loadData();
+            } catch (error) {
+                showToast('Error: ' + error.message, 'error');
+            } finally {
+                btn.classList.remove('btn-loading');
+                btn.textContent = originalText;
             }
-        }));
-        document.head.appendChild(manifestLink);
+        });
+
+        init();
     </script>
 </body>
 </html>
