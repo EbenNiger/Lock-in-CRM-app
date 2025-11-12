@@ -4,825 +4,46 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LOCK-IN CRM</title>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Inter', 'Segoe UI', sans-serif;
-            background: #0f0f13;
-            color: #ffffff;
-            min-height: 100vh;
-            scroll-behavior: smooth;
-        }
-
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-        
-        ::-webkit-scrollbar-track {
-            background: #0f0f13;
-        }
-        
-        ::-webkit-scrollbar-thumb {
-            background: #7b5cff;
-            border-radius: 4px;
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 24px;
-        }
-
-        .header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            background: rgba(15, 15, 19, 0.9);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid #2a2a32;
-            z-index: 1000;
-            padding: 20px 0;
-        }
-
-        .header-content {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 24px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-size: 24px;
-            font-weight: 800;
-            color: #ffffff;
-            letter-spacing: -0.5px;
-        }
-
-        .client-info {
-            font-size: 13px;
-            color: #aaaaaa;
-            font-weight: 500;
-        }
-
-        .logout-btn {
-            background: transparent;
-            border: 1px solid #2a2a32;
-            color: #aaaaaa;
-            padding: 8px 20px;
-            border-radius: 12px;
-            font-weight: 600;
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .logout-btn:hover {
-            border-color: #7b5cff;
-            color: #ffffff;
-        }
-
-        .banner {
-            position: fixed;
-            top: 76px;
-            left: 0;
-            right: 0;
-            background: #7b5cff;
-            padding: 16px;
-            text-align: center;
-            z-index: 999;
-            animation: slideDown 0.5s ease-out;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 12px;
-        }
-
-        @keyframes slideDown {
-            from {
-                transform: translateY(-100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        .banner-text {
-            font-weight: 700;
-            font-size: 15px;
-            color: #ffffff;
-        }
-
-        .banner-close {
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
-            color: #ffffff;
-            width: 28px;
-            height: 28px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 18px;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .banner-close:hover {
-            background: rgba(255, 255, 255, 0.3);
-        }
-
-        .main-content {
-            padding-top: 140px;
-            padding-bottom: 200px;
-        }
-
-        .quote-card {
-            background: #18181e;
-            border: 1px solid #2a2a32;
-            border-radius: 16px;
-            padding: 32px;
-            margin-bottom: 40px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
-            animation: fadeInUp 0.6s ease-out;
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .quote-text {
-            font-size: 18px;
-            font-weight: 500;
-            color: #ffffff;
-            margin-bottom: 12px;
-            font-style: italic;
-        }
-
-        .quote-author {
-            font-size: 14px;
-            color: #aaaaaa;
-            font-weight: 500;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 24px;
-            margin-bottom: 40px;
-        }
-
-        .stat-card {
-            background: #18181e;
-            border: 1px solid #2a2a32;
-            border-radius: 16px;
-            padding: 32px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
-            transition: all 0.3s ease;
-            animation: fadeInUp 0.6s ease-out;
-        }
-
-        .stat-card:nth-child(1) { animation-delay: 0.1s; }
-        .stat-card:nth-child(2) { animation-delay: 0.2s; }
-        .stat-card:nth-child(3) { animation-delay: 0.3s; }
-        .stat-card:nth-child(4) { animation-delay: 0.4s; }
-
-        .stat-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 30px rgba(123, 92, 255, 0.3);
-            border-color: #7b5cff;
-        }
-
-        .stat-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 16px;
-        }
-
-        .stat-icon {
-            font-size: 32px;
-        }
-
-        .stat-badge {
-            background: rgba(123, 92, 255, 0.15);
-            color: #7b5cff;
-            padding: 6px 12px;
-            border-radius: 8px;
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-        }
-
-        .stat-value {
-            font-size: 48px;
-            font-weight: 800;
-            color: #ffffff;
-            margin-bottom: 8px;
-            line-height: 1;
-        }
-
-        .stat-label {
-            font-size: 14px;
-            color: #aaaaaa;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .section-card {
-            background: #18181e;
-            border: 1px solid #2a2a32;
-            border-radius: 16px;
-            padding: 32px;
-            margin-bottom: 40px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
-            animation: fadeInUp 0.6s ease-out 0.5s backwards;
-        }
-
-        .section-title {
-            font-size: 20px;
-            font-weight: 700;
-            color: #ffffff;
-            margin-bottom: 24px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .filter-bar {
-            margin-bottom: 24px;
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-
-        .table-container {
-            overflow-x: auto;
-        }
-
-        .leads-table {
-            width: 100%;
-            border-collapse: collapse;
-            min-width: 900px;
-        }
-
-        .leads-table thead tr {
-            border-bottom: 1px solid #2a2a32;
-        }
-
-        .leads-table th {
-            text-align: left;
-            padding: 16px;
-            font-size: 12px;
-            font-weight: 700;
-            color: #aaaaaa;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .leads-table tbody tr {
-            border-bottom: 1px solid #2a2a32;
-            transition: all 0.3s ease;
-            animation: fadeInRow 0.4s ease-out backwards;
-            cursor: pointer;
-        }
-
-        .leads-table tbody tr:nth-child(1) { animation-delay: 0.1s; }
-        .leads-table tbody tr:nth-child(2) { animation-delay: 0.2s; }
-        .leads-table tbody tr:nth-child(3) { animation-delay: 0.3s; }
-        .leads-table tbody tr:nth-child(4) { animation-delay: 0.4s; }
-        .leads-table tbody tr:nth-child(5) { animation-delay: 0.5s; }
-
-        @keyframes fadeInRow {
-            from {
-                opacity: 0;
-                transform: translateX(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        .leads-table tbody tr:hover {
-            background: #1f1f25;
-        }
-
-        .leads-table td {
-            padding: 20px 16px;
-            font-size: 14px;
-            color: #ffffff;
-            font-weight: 500;
-        }
-
-        .status-badge {
-            padding: 6px 14px;
-            border-radius: 8px;
-            font-size: 12px;
-            font-weight: 700;
-            display: inline-block;
-        }
-
-        .status-newlead {
-            background: rgba(59, 130, 246, 0.15);
-            color: #3b82f6;
-        }
-
-        .status-contacted {
-            background: rgba(168, 85, 247, 0.15);
-            color: #a855f7;
-        }
-
-        .status-qualified {
-            background: rgba(245, 158, 11, 0.15);
-            color: #f59e0b;
-        }
-
-        .status-negotiating {
-            background: rgba(6, 182, 212, 0.15);
-            color: #06b6d4;
-        }
-
-        .status-converted {
-            background: rgba(34, 197, 94, 0.15);
-            color: #22c55e;
-        }
-
-        .status-lost {
-            background: rgba(239, 68, 68, 0.15);
-            color: #ef4444;
-        }
-
-        .floating-add {
-            position: fixed;
-            bottom: 32px;
-            right: 32px;
-            background: #18181e;
-            border: 1px solid #2a2a32;
-            border-radius: 16px;
-            padding: 24px;
-            width: 320px;
-            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
-            animation: floatIn 0.5s ease-out;
-            z-index: 900;
-        }
-
-        @keyframes floatIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px) scale(0.9);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-        }
-
-        .floating-add:hover {
-            transform: scale(1.02);
-            box-shadow: 0 12px 50px rgba(123, 92, 255, 0.4);
-        }
-
-        .floating-title {
-            font-size: 16px;
-            font-weight: 700;
-            color: #ffffff;
-            margin-bottom: 16px;
-        }
-
-        .form-group {
-            margin-bottom: 12px;
-        }
-
-        .form-input {
-            width: 100%;
-            background: #0f0f13;
-            border: 1px solid #2a2a32;
-            border-radius: 12px;
-            padding: 12px 16px;
-            font-size: 14px;
-            color: #ffffff;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-
-        .form-input:focus {
-            outline: none;
-            border-color: #7b5cff;
-            box-shadow: 0 0 0 3px rgba(123, 92, 255, 0.1);
-        }
-
-        .form-input::placeholder {
-            color: #aaaaaa;
-        }
-
-        .add-btn {
-            width: 100%;
-            background: #7b5cff;
-            border: none;
-            border-radius: 12px;
-            padding: 14px;
-            font-size: 14px;
-            font-weight: 700;
-            color: #ffffff;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .add-btn:hover {
-            background: #9b7bff;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(123, 92, 255, 0.4);
-        }
-
-        .add-btn:active {
-            transform: scale(0.97);
-        }
-
-        .btn-loading {
-            position: relative;
-            pointer-events: none;
-            color: transparent;
-        }
-
-        .btn-loading::after {
-            content: '';
-            position: absolute;
-            width: 16px;
-            height: 16px;
-            top: 50%;
-            left: 50%;
-            margin-left: -8px;
-            margin-top: -8px;
-            border: 2px solid #ffffff;
-            border-radius: 50%;
-            border-top-color: transparent;
-            animation: spin 0.6s linear infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        .btn-danger {
-            background: #ef4444;
-        }
-
-        .btn-danger:hover {
-            background: #dc2626;
-            box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
-        }
-
-        .hidden {
-            display: none !important;
-        }
-
-        .modal-backdrop {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(8px);
-            z-index: 2000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 24px;
-        }
-
-        .modal-content {
-            background: #18181e;
-            border: 1px solid #2a2a32;
-            border-radius: 16px;
-            width: 100%;
-            max-width: 600px;
-            max-height: 90vh;
-            overflow-y: auto;
-            animation: modalIn 0.3s ease-out;
-        }
-
-        @keyframes modalIn {
-            from {
-                opacity: 0;
-                transform: scale(0.9);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-
-        .modal-header {
-            padding: 24px;
-            border-bottom: 1px solid #2a2a32;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .modal-title {
-            font-size: 20px;
-            font-weight: 700;
-            color: #ffffff;
-        }
-
-        .modal-close {
-            background: transparent;
-            border: none;
-            color: #aaaaaa;
-            font-size: 24px;
-            cursor: pointer;
-            width: 32px;
-            height: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-        }
-
-        .modal-close:hover {
-            background: #2a2a32;
-            color: #ffffff;
-        }
-
-        .modal-body {
-            padding: 24px;
-        }
-
-        .form-label {
-            display: block;
-            font-size: 13px;
-            font-weight: 600;
-            color: #aaaaaa;
-            margin-bottom: 8px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-        }
-
-        select.form-input {
-            cursor: pointer;
-        }
-
-        textarea.form-input {
-            resize: vertical;
-            min-height: 100px;
-        }
-
-        .modal-actions {
-            display: flex;
-            gap: 12px;
-            margin-top: 24px;
-        }
-
-        .code-entry {
-            position: fixed;
-            inset: 0;
-            background: #0f0f13;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 24px;
-            z-index: 3000;
-        }
-
-        .code-card {
-            background: #18181e;
-            border: 1px solid #2a2a32;
-            border-radius: 16px;
-            padding: 48px;
-            width: 100%;
-            max-width: 440px;
-            text-align: center;
-            box-shadow: 0 0 40px rgba(123, 92, 255, 0.2);
-        }
-
-        .code-icon {
-            font-size: 64px;
-            margin-bottom: 24px;
-            animation: float 3s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        .code-title {
-            font-size: 28px;
-            font-weight: 800;
-            color: #ffffff;
-            margin-bottom: 12px;
-        }
-
-        .code-subtitle {
-            font-size: 14px;
-            color: #aaaaaa;
-            margin-bottom: 32px;
-        }
-
-        .code-input {
-            width: 100%;
-            background: #0f0f13;
-            border: 2px solid #7b5cff;
-            border-radius: 12px;
-            padding: 16px;
-            font-size: 18px;
-            color: #ffffff;
-            font-weight: 700;
-            text-align: center;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 16px;
-            transition: all 0.3s ease;
-        }
-
-        .code-input:focus {
-            outline: none;
-            box-shadow: 0 0 0 4px rgba(123, 92, 255, 0.2);
-        }
-
-        .code-btn {
-            width: 100%;
-            background: #7b5cff;
-            border: none;
-            border-radius: 12px;
-            padding: 16px;
-            font-size: 16px;
-            font-weight: 700;
-            color: #ffffff;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .code-btn:hover {
-            background: #9b7bff;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(123, 92, 255, 0.5);
-        }
-
-        .code-btn:active {
-            transform: scale(0.97);
-        }
-
-        .loading-screen {
-            position: fixed;
-            inset: 0;
-            background: #0f0f13;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 3000;
-        }
-
-        .loading-content {
-            text-align: center;
-        }
-
-        .loading-icon {
-            font-size: 64px;
-            margin-bottom: 24px;
-            animation: float 2s ease-in-out infinite;
-        }
-
-        .loading-text {
-            font-size: 20px;
-            font-weight: 700;
-            color: #7b5cff;
-        }
-
-        .toast {
-            position: fixed;
-            bottom: 100px;
-            right: 32px;
-            background: #18181e;
-            border: 1px solid #2a2a32;
-            border-radius: 12px;
-            padding: 16px 24px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
-            z-index: 9999;
-            animation: slideInRight 0.3s ease-out;
-            max-width: 400px;
-        }
-
-        @keyframes slideInRight {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-
-        .toast.success {
-            border-left: 4px solid #22c55e;
-        }
-
-        .toast.error {
-            border-left: 4px solid #ef4444;
-        }
-
-        .toast-message {
-            color: #ffffff;
-            font-weight: 600;
-        }
-
-        @media (max-width: 768px) {
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .floating-add {
-                left: 16px;
-                right: 16px;
-                bottom: 16px;
-                width: auto;
-            }
-
-            .header-content {
-                flex-direction: column;
-                gap: 12px;
-            }
-
-            .main-content {
-                padding-top: 180px;
-            }
-
-            .form-row {
-                grid-template-columns: 1fr;
-            }
-
-            .stat-value {
-                font-size: 36px;
-            }
-
-            .quote-card {
-                padding: 24px;
-            }
-
-            .section-card {
-                padding: 24px;
-            }
-
-            .toast {
-                right: 16px;
-                left: 16px;
-                bottom: 80px;
-            }
-
-            .filter-bar {
-                flex-direction: column;
-            }
-
-            .filter-bar .form-input {
-                width: 100%;
-            }
-        }
-    </style>
 </head>
 <body>
-    <div id="codeEntryScreen" class="code-entry hidden">
-        <div class="code-card">
-            <div class="code-icon">🔐</div>
-            <h1 class="code-title">LOCK-IN CRM</h1>
-            <p class="code-subtitle">Enter your access code to continue</p>
-            <input type="text" id="codeInput" class="code-input" placeholder="ENTER CODE" maxlength="20">
-            <button onclick="saveClientCode()" class="code-btn">LET'S GO </button>
+    <div id="authScreen" class="auth-screen">
+        <div class="auth-card">
+            <div class="auth-icon">🔐</div>
+            <h1 class="auth-title">LOCK-IN CRM</h1>
+            <p class="auth-subtitle">Sign in to your account</p>
+            
+            <div id="loginForm" class="auth-form">
+                <div class="form-group">
+                    <input type="email" id="loginEmail" class="form-input" placeholder="Email" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="loginPassword" class="form-input" placeholder="Password" required>
+                </div>
+                <button onclick="loginUser()" class="auth-btn">Sign In 🚀</button>
+                <p class="auth-switch">Don't have an account? <span onclick="showSignup()">Sign up</span></p>
+            </div>
+
+            <div id="signupForm" class="auth-form hidden">
+                <div class="form-group">
+                    <input type="text" id="signupName" class="form-input" placeholder="Full Name" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" id="signupEmail" class="form-input" placeholder="Email" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="signupPassword" class="form-input" placeholder="Password (6+ characters)" required>
+                </div>
+                <button onclick="signupUser()" class="auth-btn">Create Account 🎯</button>
+                <p class="auth-switch">Already have an account? <span onclick="showLogin()">Sign in</span></p>
+            </div>
         </div>
     </div>
 
     <div id="loading" class="loading-screen">
         <div class="loading-content">
-            <div class="loading-icon"></div>
+            <div class="loading-icon">⚡</div>
             <div class="loading-text">Loading your empire...</div>
         </div>
     </div>
@@ -832,11 +53,20 @@
             <div class="header-content">
                 <div>
                     <div class="logo">LOCK-IN</div>
-                    <div id="clientBadge" class="client-info">Loading...</div>
+                    <div id="userInfo" class="user-info">Loading...</div>
                 </div>
-                <button onclick="logout()" class="logout-btn">Logout</button>
+                <div class="header-actions">
+                    <button onclick="toggleMenu()" class="menu-btn">☰</button>
+                </div>
             </div>
         </header>
+
+        <div id="dropdownMenu" class="dropdown-menu hidden">
+            <button onclick="openSettings()" class="dropdown-item">⚙️ Settings</button>
+            <button onclick="openIntegrations()" class="dropdown-item">🔗 Integrations</button>
+            <button onclick="openWinStories()" class="dropdown-item">🏆 Win Stories</button>
+            <button onclick="logout()" class="dropdown-item logout-item">🚪 Logout</button>
+        </div>
 
         <div id="topBanner" class="banner">
             <span class="banner-text">💼 NEW BIZZ UPDATE? ADD QUICKLY!</span>
@@ -853,7 +83,7 @@
                 <div class="stats-grid">
                     <div class="stat-card">
                         <div class="stat-header">
-                            <div class="stat-icon"></div>
+                            <div class="stat-icon">👥</div>
                             <div class="stat-badge">TOTAL</div>
                         </div>
                         <div class="stat-value" id="totalLeads">0</div>
@@ -862,7 +92,7 @@
 
                     <div class="stat-card">
                         <div class="stat-header">
-                            <div class="stat-icon"></div>
+                            <div class="stat-icon">🆕</div>
                             <div class="stat-badge">WEEK</div>
                         </div>
                         <div class="stat-value" id="newThisWeek">0</div>
@@ -871,7 +101,7 @@
 
                     <div class="stat-card">
                         <div class="stat-header">
-                            <div class="stat-icon"></div>
+                            <div class="stat-icon">💰</div>
                             <div class="stat-badge">REVENUE</div>
                         </div>
                         <div class="stat-value" id="totalRevenue">$0</div>
@@ -880,7 +110,7 @@
 
                     <div class="stat-card">
                         <div class="stat-header">
-                            <div class="stat-icon"></div>
+                            <div class="stat-icon">🎯</div>
                             <div class="stat-badge">WIN RATE</div>
                         </div>
                         <div class="stat-value" id="conversionRate">0%</div>
@@ -888,20 +118,22 @@
                     </div>
                 </div>
 
+                <div id="followUpAlerts" class="follow-up-alerts"></div>
+
                 <div class="section-card">
-                    <h2 class="section-title"><span></span> Your Leads</h2>
+                    <h2 class="section-title"><span>📊</span> Your Leads</h2>
                     
                     <div class="filter-bar">
-                        <input type="text" id="searchLeads" class="form-input" placeholder=" Search leads..." 
+                        <input type="text" id="searchLeads" class="form-input" placeholder="🔍 Search leads..." 
                                style="flex: 1; min-width: 200px;" onkeyup="filterLeads()">
                         <select id="filterStatus" class="form-input" style="width: 200px;" onchange="filterLeads()">
                             <option value="">All Statuses</option>
-                            <option value="New Lead"> New Lead</option>
-                            <option value="Contacted"> Contacted</option>
-                            <option value="Qualified"> Qualified</option>
-                            <option value="Negotiating"> Negotiating</option>
-                            <option value="Converted"> Converted</option>
-                            <option value="Lost"> Lost</option>
+                            <option value="New Lead">🆕 New Lead</option>
+                            <option value="Contacted">📞 Contacted</option>
+                            <option value="Qualified">✅ Qualified</option>
+                            <option value="Negotiating">💰 Negotiating</option>
+                            <option value="Converted">🎉 Converted</option>
+                            <option value="Lost">❌ Lost</option>
                         </select>
                     </div>
 
@@ -921,12 +153,12 @@
                             <tbody id="leadsTableBody">
                                 <tr>
                                     <td colspan="7" style="text-align: center; padding: 80px 20px;">
-                                        <div style="font-size: 64px; margin-bottom: 16px;"></div>
+                                        <div style="font-size: 64px; margin-bottom: 16px;">🚀</div>
                                         <div style="font-size: 20px; font-weight: 700; color: #ffffff; margin-bottom: 8px;">
                                             Ready to lock in?
                                         </div>
                                         <div style="color: #aaaaaa; margin-bottom: 24px;">
-                                            Add your first lead using the Quick Add box →
+                                            Add your first lead by tapping the + button
                                         </div>
                                     </td>
                                 </tr>
@@ -937,28 +169,14 @@
             </div>
         </main>
 
-        <div class="floating-add">
-            <div class="floating-title">⚡ Quick Add Lead</div>
-            <form id="quickAddForm">
-                <div class="form-group">
-                    <input type="text" id="quickName" class="form-input" placeholder="Name" required>
-                </div>
-                <div class="form-group">
-                    <input type="email" id="quickEmail" class="form-input" placeholder="Email">
-                </div>
-                <div class="form-group">
-                    <input type="tel" id="quickPhone" class="form-input" placeholder="Phone">
-                </div>
-                <button type="submit" class="add-btn">Add Lead</button>
-            </form>
-        </div>
+        <button onclick="openAddLeadModal()" class="fab">+</button>
     </div>
 
     <div id="contactModal" class="modal-backdrop hidden">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 class="modal-title" id="modalTitle">Add Contact</h2>
-                <button onclick="closeModal()" class="modal-close">✕</button>
+                <h2 class="modal-title" id="modalTitle">Add Lead</h2>
+                <button onclick="closeContactModal()" class="modal-close">✕</button>
             </div>
             <div class="modal-body">
                 <form id="contactForm">
@@ -984,12 +202,12 @@
                         <div class="form-group">
                             <label class="form-label">Status</label>
                             <select id="statusInput" class="form-input">
-                                <option value="New Lead"> New Lead</option>
-                                <option value="Contacted"> Contacted</option>
-                                <option value="Qualified"> Qualified</option>
-                                <option value="Negotiating"> Negotiating</option>
-                                <option value="Converted"> Converted</option>
-                                <option value="Lost"> Lost</option>
+                                <option value="New Lead">🆕 New Lead</option>
+                                <option value="Contacted">📞 Contacted</option>
+                                <option value="Qualified">✅ Qualified</option>
+                                <option value="Negotiating">💰 Negotiating</option>
+                                <option value="Converted">🎉 Converted</option>
+                                <option value="Lost">❌ Lost</option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -1018,473 +236,123 @@
                         <textarea id="notesInput" class="form-input"></textarea>
                     </div>
                     <div class="modal-actions">
-                        <button type="submit" class="add-btn" style="flex: 1;">Save Contact</button>
+                        <button type="submit" class="add-btn" style="flex: 1;">Save Lead</button>
                         <button type="button" onclick="deleteContact()" class="add-btn btn-danger" style="flex: 1;">Delete</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
- <script>
-        const config = {
-            url: 'https://zwhbeigmycnlvaxwlytn.supabase.co',
-            key: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp3aGJlaWdteWNubHZheHdseXRuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjIwMzQzNDQsImV4cCI6MjA3NzYxMDM0NH0.PQOSG4MiX7fvyo_RUUfnI6hNsUI17GxNA6GOYG2HSPc'
-        };
-        
-        const supabase = window.supabase.createClient(config.url, config.key);
-        
-        let clientCode = null;
-        let contacts = [];
-        let currentEditId = null;
 
-        const quotes = [
-            { text: "The grind never stops. Your future self will thank you.", author: "Anonymous Hustler" },
-            { text: "Success is not given, it's earned. Keep going.", author: "Unknown" },
-            { text: "Don't watch the clock; do what it does. Keep going.", author: "Sam Levenson" },
-            { text: "The only way to do great work is to love what you do.", author: "Steve Jobs" },
-            { text: "Your limitation—it's only your imagination.", author: "Unknown" },
-            { text: "Push yourself, because no one else is going to do it for you.", author: "Unknown" },
-            { text: "Great things never come from comfort zones.", author: "Unknown" },
-            { text: "Dream it. Wish it. Do it.", author: "Unknown" },
-            { text: "Success doesn't just find you. You have to go out and get it.", author: "Unknown" },
-            { text: "The harder you work for something, the greater you'll feel when you achieve it.", author: "Unknown" },
-            { text: "Dream bigger. Do bigger.", author: "Unknown" },
-            { text: "Don't stop when you're tired. Stop when you're done.", author: "Unknown" },
-            { text: "Wake up with determination. Go to bed with satisfaction.", author: "Unknown" },
-            { text: "Do something today that your future self will thank you for.", author: "Sean Patrick Flanery" },
-            { text: "Little things make big days.", author: "Unknown" },
-            { text: "It's going to be hard, but hard does not mean impossible.", author: "Unknown" },
-            { text: "Don't wait for opportunity. Create it.", author: "Unknown" },
-            { text: "The key to success is to focus on goals, not obstacles.", author: "Unknown" },
-            { text: "Dream it. Believe it. Build it.", author: "Unknown" }
-        ];
-
-        function showToast(message, type = 'success') {
-            const existingToast = document.querySelector('.toast');
-            if (existingToast) existingToast.remove();
-            
-            const toast = document.createElement('div');
-            toast.className = `toast ${type}`;
-            toast.innerHTML = `<div class="toast-message">${message}</div>`;
-            document.body.appendChild(toast);
-            
-            setTimeout(() => {
-                toast.style.animation = 'slideInRight 0.3s ease-out reverse';
-                setTimeout(() => toast.remove(), 300);
-            }, 3000);
-        }
-
-        function displayQuote() {
-            const quote = quotes[Math.floor(Math.random() * quotes.length)];
-            document.getElementById('quoteText').textContent = `"${quote.text}"`;
-            document.getElementById('quoteAuthor').textContent = `— ${quote.author}`;
-        }
-
-        function dismissBanner() {
-            document.getElementById('topBanner').style.display = 'none';
-            localStorage.setItem('bannerDismissed', 'true');
-        }
-
-        function checkBanner() {
-            const dismissed = localStorage.getItem('bannerDismissed');
-            if (dismissed === 'true') {
-                const banner = document.getElementById('topBanner');
-                if (banner) banner.style.display = 'none';
-            }
-        }
-
-        function validateEmail(email) {
-            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            return re.test(email);
-        }
-
-        function validatePhone(phone) {
-            const re = /^[\d\s\-\+\(\)]+$/;
-            return phone.length >= 10 && re.test(phone);
-        }
-
-        async function init() {
-            clientCode = localStorage.getItem('clientCode');
-            
-            if (!clientCode) {
-                document.getElementById('loading').classList.add('hidden');
-                document.getElementById('codeEntryScreen').classList.remove('hidden');
-                return;
-            }
-            
-            try {
-                const { data: client, error } = await supabase
-                    .from('clients')
-                    .select('*')
-                    .eq('client_code', clientCode)
-                    .single();
+    <div id="winStoriesModal" class="modal-backdrop hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">🏆 Win Stories</h2>
+                <button onclick="closeWinStoriesModal()" class="modal-close">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="win-story-form">
+                    <div class="form-group">
+                        <label class="form-label">Deal/Client Name</label>
+                        <input type="text" id="winStoryName" class="form-input" placeholder="John Doe - Website Project">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Deal Value</label>
+                        <input type="number" id="winStoryValue" class="form-input" placeholder="5000">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">What Worked? (Your winning strategy)</label>
+                        <textarea id="winStoryDetails" class="form-input" rows="5" placeholder="Quick response time, personalized proposal, great rapport on the call..."></textarea>
+                    </div>
+                    <button onclick="saveWinStory()" class="add-btn">💾 Save Win Story</button>
+                </div>
                 
-                if (error || !client) {
-                    throw new Error('Invalid client code');
-                }
-                
-                document.getElementById('loading').classList.add('hidden');
-                document.getElementById('mainApp').classList.remove('hidden');
-                document.getElementById('clientBadge').textContent = `${client.business_name || client.client_name} • ${client.client_code}`;
-                
-                displayQuote();
-                checkBanner();
-                await loadData();
-            } catch (err) {
-                showToast('Invalid client code. Please re-enter.', 'error');
-                logout();
-            }
-        }
+                <div class="win-stories-list" id="winStoriesList">
+                    <h3 style="margin: 32px 0 16px 0; color: #aaaaaa; font-size: 14px; text-transform: uppercase;">Your Wins 🎉</h3>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        function saveClientCode() {
-            const code = document.getElementById('codeInput').value.trim().toUpperCase();
-            if (!code) {
-                showToast('Please enter a code', 'error');
-                return;
-            }
-            localStorage.setItem('clientCode', code);
-            window.location.reload();
-        }
+    <div id="settingsModal" class="modal-backdrop hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">⚙️ Settings</h2>
+                <button onclick="closeSettingsModal()" class="modal-close">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="settings-section">
+                    <h3 class="settings-title">Account</h3>
+                    <div class="settings-item">
+                        <div>
+                            <div class="settings-label">Email</div>
+                            <div class="settings-value" id="settingsEmail">Loading...</div>
+                        </div>
+                    </div>
+                    <div class="settings-item">
+                        <div>
+                            <div class="settings-label">Name</div>
+                            <div class="settings-value" id="settingsName">Loading...</div>
+                        </div>
+                    </div>
+                </div>
 
-        function logout() {
-            localStorage.removeItem('clientCode');
-            window.location.reload();
-        }
+                <div class="settings-section">
+                    <h3 class="settings-title">Notifications</h3>
+                    <div class="settings-item">
+                        <div>
+                            <div class="settings-label">Follow-up Reminders</div>
+                            <div class="settings-desc">Get notified about upcoming follow-ups</div>
+                        </div>
+                        <label class="toggle">
+                            <input type="checkbox" id="notificationsToggle" onchange="toggleNotifications()">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
 
-        async function loadData() {
-            const { data, error } = await supabase
-                .from('contacts')
-                .select('*')
-                .eq('client_code', clientCode)
-                .order('created_at', { ascending: false });
-            
-            if (error) {
-                showToast('Error loading data', 'error');
-                return;
-            }
-            
-            contacts = data || [];
-            renderDashboard();
-            renderTable();
-        }
+                <div class="settings-section">
+                    <h3 class="settings-title">Data</h3>
+                    <button onclick="exportData()" class="settings-btn">📥 Export All Data (CSV)</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        function renderDashboard() {
-            const total = contacts.length;
-            const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
-            const newThisWeek = contacts.filter(c => new Date(c.created_at) > weekAgo).length;
-            
-            const totalRevenue = contacts
-                .filter(c => c.status === 'Converted' && c.value)
-                .reduce((sum, c) => sum + parseFloat(c.value || 0), 0);
-            
-            const converted = contacts.filter(c => c.status === 'Converted').length;
-            const convRate = total > 0 ? Math.round((converted / total) * 100) : 0;
-            
-            document.getElementById('totalLeads').textContent = total;
-            document.getElementById('newThisWeek').textContent = newThisWeek;
-            document.getElementById('totalRevenue').textContent = '$' + totalRevenue.toLocaleString();
-            document.getElementById('conversionRate').textContent = convRate + '%';
-        }
+    <div id="integrationsModal" class="modal-backdrop hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">🔗 Integrations</h2>
+                <button onclick="closeIntegrationsModal()" class="modal-close">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="integration-card">
+                    <div class="integration-icon">📧</div>
+                    <div class="integration-info">
+                        <h3>Google Account</h3>
+                        <p>Connect Gmail, Calendar, and Contacts</p>
+                    </div>
+                    <button onclick="connectGoogle()" class="integration-btn" id="googleConnectBtn">Connect</button>
+                </div>
 
-        function renderTable() {
-            const tbody = document.getElementById('leadsTableBody');
-            
-            if (contacts.length === 0) {
-                tbody.innerHTML = `
-                    <tr>
-                        <td colspan="7" style="text-align: center; padding: 80px 20px;">
-                            <div style="font-size: 64px; margin-bottom: 16px;"></div>
-                            <div style="font-size: 20px; font-weight: 700; color: #ffffff; margin-bottom: 8px;">
-                                Ready to lock in?
-                            </div>
-                            <div style="color: #aaaaaa; margin-bottom: 24px;">
-                                Add your first lead using the Quick Add box →
-                            </div>
-                        </td>
-                    </tr>
-                `;
-                return;
-            }
-
-            tbody.innerHTML = contacts.map(contact => {
-                const statusClass = contact.status.toLowerCase().replace(' ', '');
-                const followupDate = contact.followup_date 
-                    ? new Date(contact.followup_date).toLocaleDateString() 
-                    : '-';
-                const daysUntil = contact.followup_date 
-                    ? Math.floor((new Date(contact.followup_date) - new Date()) / (1000 * 60 * 60 * 24))
-                    : null;
-                
-                let followupDisplay = followupDate;
-                if (daysUntil !== null) {
-                    if (daysUntil < 0) {
-                        followupDisplay = `${followupDate} (${Math.abs(daysUntil)} days ago)`;
-                    } else if (daysUntil === 0) {
-                        followupDisplay = `${followupDate} (Today!)`;
-                    } else {
-                        followupDisplay = `${followupDate} (${daysUntil} days)`;
-                    }
-                }
-
-                return `
-                    <tr onclick="editContact('${contact.id}')">
-                        <td>${contact.name}</td>
-                        <td>${contact.email || '-'}</td>
-                        <td>${contact.phone || '-'}</td>
-                        <td>${contact.company || '-'}</td>
-                        <td><span class="status-badge status-${statusClass}">${contact.status}</span></td>
-                        <td>${contact.value ? '$' + parseFloat(contact.value).toLocaleString() : '-'}</td>
-                        <td>${followupDisplay}</td>
-                    </tr>
-                `;
-            }).join('');
-        }
-
-        function renderTableWithData(data) {
-            const tbody = document.getElementById('leadsTableBody');
-            
-            if (data.length === 0) {
-                tbody.innerHTML = `
-                    <tr>
-                        <td colspan="7" style="text-align: center; padding: 60px; color: #aaaaaa;">
-                            No leads match your filters 🔍
-                        </td>
-                    </tr>
-                `;
-                return;
-            }
-
-            tbody.innerHTML = data.map(contact => {
-                const statusClass = contact.status.toLowerCase().replace(' ', '');
-                const followupDate = contact.followup_date 
-                    ? new Date(contact.followup_date).toLocaleDateString() 
-                    : '-';
-                const daysUntil = contact.followup_date 
-                    ? Math.floor((new Date(contact.followup_date) - new Date()) / (1000 * 60 * 60 * 24))
-                    : null;
-                
-                let followupDisplay = followupDate;
-                if (daysUntil !== null) {
-                    if (daysUntil < 0) {
-                        followupDisplay = `${followupDate} (${Math.abs(daysUntil)} days ago)`;
-                    } else if (daysUntil === 0) {
-                        followupDisplay = `${followupDate} (Today!)`;
-                    } else {
-                        followupDisplay = `${followupDate} (${daysUntil} days)`;
-                    }
-                }
-
-                return `
-                    <tr onclick="editContact('${contact.id}')">
-                        <td>${contact.name}</td>
-                        <td>${contact.email || '-'}</td>
-                        <td>${contact.phone || '-'}</td>
-                        <td>${contact.company || '-'}</td>
-                        <td><span class="status-badge status-${statusClass}">${contact.status}</span></td>
-                        <td>${contact.value ? '$' + parseFloat(contact.value).toLocaleString() : '-'}</td>
-                        <td>${followupDisplay}</td>
-                    </tr>
-                `;
-            }).join('');
-        }
-
-        function filterLeads() {
-            const searchTerm = document.getElementById('searchLeads').value.toLowerCase();
-            const statusFilter = document.getElementById('filterStatus').value;
-            
-            let filtered = contacts;
-            
-            if (searchTerm) {
-                filtered = filtered.filter(c => 
-                    c.name.toLowerCase().includes(searchTerm) ||
-                    (c.email && c.email.toLowerCase().includes(searchTerm)) ||
-                    (c.company && c.company.toLowerCase().includes(searchTerm)) ||
-                    (c.phone && c.phone.includes(searchTerm))
-                );
-            }
-            
-            if (statusFilter) {
-                filtered = filtered.filter(c => c.status === statusFilter);
-            }
-            
-            renderTableWithData(filtered);
-        }
-
-        document.getElementById('quickAddForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            const btn = e.target.querySelector('.add-btn');
-            const originalText = btn.textContent;
-            btn.classList.add('btn-loading');
-            btn.textContent = '';
-            
-            const email = document.getElementById('quickEmail').value;
-            const phone = document.getElementById('quickPhone').value;
-
-            if (email && !validateEmail(email)) {
-                showToast('Please enter a valid email', 'error');
-                btn.classList.remove('btn-loading');
-                btn.textContent = originalText;
-                return;
-            }
-
-            if (phone && !validatePhone(phone)) {
-                showToast('Please enter a valid phone number', 'error');
-                btn.classList.remove('btn-loading');
-                btn.textContent = originalText;
-                return;
-            }
-            
-            try {
-                const contactData = {
-                    client_code: clientCode,
-                    name: document.getElementById('quickName').value,
-                    email: email,
-                    phone: phone,
-                    status: 'New Lead',
-                    activities: JSON.stringify([{
-                        type: 'Created',
-                        details: 'Contact created',
-                        date: new Date().toISOString()
-                    }])
-                };
-                
-                const { error } = await supabase
-                    .from('contacts')
-                    .insert([contactData]);
-                
-                if (error) throw error;
-                
-                document.getElementById('quickAddForm').reset();
-                await loadData();
-                showToast(' New lead added!', 'success');
-                
-            } catch (error) {
-                showToast('Error: ' + error.message, 'error');
-            } finally {
-                btn.classList.remove('btn-loading');
-                btn.textContent = originalText;
-            }
-        });
-
-        function editContact(id) {
-            currentEditId = id;
-            const contact = contacts.find(c => c.id === id);
-            
-            document.getElementById('modalTitle').textContent = 'Edit Contact';
-            document.getElementById('nameInput').value = contact.name;
-            document.getElementById('phoneInput').value = contact.phone || '';
-            document.getElementById('emailInput').value = contact.email || '';
-            document.getElementById('companyInput').value = contact.company || '';
-            document.getElementById('statusInput').value = contact.status;
-            document.getElementById('valueInput').value = contact.value || '';
-            document.getElementById('sourceInput').value = contact.source || '';
-            document.getElementById('followupInput').value = contact.followup_date || '';
-            document.getElementById('notesInput').value = contact.notes || '';
-            
-            document.getElementById('contactModal').classList.remove('hidden');
-        }
-
-        function closeModal() {
-            document.getElementById('contactModal').classList.add('hidden');
-            currentEditId = null;
-            document.getElementById('contactForm').reset();
-        }
-
-        async function deleteContact() {
-            if (!currentEditId) return;
-            
-            if (!confirm('Are you sure you want to delete this contact? This cannot be undone.')) {
-                return;
-            }
-
-            try {
-                const { error } = await supabase
-                    .from('contacts')
-                    .delete()
-                    .eq('id', currentEditId);
-                
-                if (error) throw error;
-                
-                showToast('Contact deleted', 'success');
-                closeModal();
-                await loadData();
-            } catch (error) {
-                showToast('Error deleting contact', 'error');
-            }
-        }
-
-        document.getElementById('contactForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            const btn = e.target.querySelector('.add-btn');
-            const originalText = btn.textContent;
-            btn.classList.add('btn-loading');
-            btn.textContent = '';
-
-            const email = document.getElementById('emailInput').value;
-            const phone = document.getElementById('phoneInput').value;
-
-            if (email && !validateEmail(email)) {
-                showToast('Please enter a valid email', 'error');
-                btn.classList.remove('btn-loading');
-                btn.textContent = originalText;
-                return;
-            }
-
-            if (phone && !validatePhone(phone)) {
-                showToast('Please enter a valid phone number', 'error');
-                btn.classList.remove('btn-loading');
-                btn.textContent = originalText;
-                return;
-            }
-            
-            try {
-                const contactData = {
-                    client_code: clientCode,
-                    name: document.getElementById('nameInput').value,
-                    phone: phone,
-                    email: email,
-                    company: document.getElementById('companyInput').value,
-                    status: document.getElementById('statusInput').value,
-                    value: document.getElementById('valueInput').value || null,
-                    source: document.getElementById('sourceInput').value,
-                    followup_date: document.getElementById('followupInput').value || null,
-                    notes: document.getElementById('notesInput').value
-                };
-                
-                let error;
-                if (currentEditId) {
-                    ({ error } = await supabase
-                        .from('contacts')
-                        .update(contactData)
-                        .eq('id', currentEditId));
-                } else {
-                    contactData.activities = JSON.stringify([{
-                        type: 'Created',
-                        details: 'Contact created',
-                        date: new Date().toISOString()
-                    }]);
+                <div id="googleConnected" class="hidden" style="margin-top: 24px;">
+                    <div style="background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.3); border-radius: 12px; padding: 16px; margin-bottom: 16px;">
+                        <div style="color: #22c55e; font-weight: 600; margin-bottom: 8px;">✅ Connected</div>
+                        <div style="color: #aaaaaa; font-size: 14px;" id="googleEmail">Loading...</div>
+                    </div>
                     
-                    ({ error } = await supabase
-                        .from('contacts')
-                        .insert([contactData]));
-                }
-                
-                if (error) throw error;
-                
-                showToast('Contact saved', 'success');
-                closeModal();
-                await loadData();
-            } catch (error) {
-                showToast('Error: ' + error.message, 'error');
-            } finally {
-                btn.classList.remove('btn-loading');
-                btn.textContent = originalText;
-            }
-        });
+                    <div style="display: grid; gap: 12px;">
+                        <button onclick="syncGoogleCalendar()" class="add-btn">📅 Sync Follow-ups to Calendar</button>
+                        <button onclick="disconnectGoogle()" class="add-btn btn-danger">🔌 Disconnect</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        init();
-    </script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
