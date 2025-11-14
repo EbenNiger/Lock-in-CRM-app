@@ -1,7 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-import { getFirestore, collection, addDoc, getDocs, updateDoc, deleteDoc, doc, query, where, serverTimestamp, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { getFirestore, collection, addDoc, getDocs, getDoc, updateDoc, deleteDoc, doc, query, where, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyD-5KD1mpt-EQnWcXG9w83CW2L0HJrGIDY",
@@ -101,7 +101,6 @@ window.signupUser = async function() {
 
         showToast('Account created! 🎉', 'success');
     } catch (error) {
-        console.error('Signup error:', error);
         if (error.code === 'auth/email-already-in-use') {
             showToast('Email already in use', 'error');
         } else if (error.code === 'auth/invalid-email') {
@@ -127,7 +126,6 @@ window.loginUser = async function() {
         await signInWithEmailAndPassword(auth, email, password);
         showToast('Welcome back! 🚀', 'success');
     } catch (error) {
-        console.error('Login error:', error);
         if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password' || error.code === 'auth/invalid-credential') {
             showToast('Invalid email or password', 'error');
         } else if (error.code === 'auth/invalid-email') {
@@ -144,18 +142,17 @@ window.logout = function() {
 }
 
 onAuthStateChanged(auth, async (user) => {
-    console.log('Auth state changed:', user);
-    
     if (user) {
         currentUser = user;
         document.getElementById('loading').classList.remove('hidden');
+        document.getElementById('authScreen').classList.add('hidden');
         
         try {
             const userDocRef = doc(db, 'users', user.uid);
-            const userDocSnap = await getDocs(query(collection(db, 'users'), where('uid', '==', user.uid)));
+            const userDocSnap = await getDoc(userDocRef);
             
-            if (!userDocSnap.empty) {
-                userData = { id: userDocSnap.docs[0].id, ...userDocSnap.docs[0].data() };
+            if (userDocSnap.exists()) {
+                userData = { id: userDocSnap.id, ...userDocSnap.data() };
             } else {
                 await setDoc(userDocRef, {
                     uid: user.uid,
@@ -174,7 +171,7 @@ onAuthStateChanged(auth, async (user) => {
                 };
             }
             
-            console.log('User data:', userData);
+            document.getElementById('loading').classList.add('hidden');
             
             if (!userData.onboarded) {
                 showOnboarding();
@@ -182,7 +179,6 @@ onAuthStateChanged(auth, async (user) => {
                 showQuoteScreen();
             }
         } catch (error) {
-            console.error('Error loading user data:', error);
             showToast('Error loading user data', 'error');
             document.getElementById('loading').classList.add('hidden');
         }
@@ -230,7 +226,6 @@ document.getElementById('onboardingForm').addEventListener('submit', async (e) =
         
         showQuoteScreen();
     } catch (error) {
-        console.error('Onboarding error:', error);
         showToast('Error: ' + error.message, 'error');
     }
 });
@@ -321,7 +316,6 @@ async function loadLeads() {
         updateDashboard();
         renderLeadsTable();
     } catch (error) {
-        console.error('Error loading leads:', error);
         showToast('Error loading leads', 'error');
     }
 }
@@ -486,7 +480,6 @@ document.getElementById('contactForm').addEventListener('submit', async (e) => {
         closeContactModal();
         await loadLeads();
     } catch (error) {
-        console.error('Error saving lead:', error);
         showToast('Error: ' + error.message, 'error');
     }
 });
@@ -504,7 +497,6 @@ window.deleteContact = async function() {
         closeContactModal();
         await loadLeads();
     } catch (error) {
-        console.error('Error deleting lead:', error);
         showToast('Error deleting lead', 'error');
     }
 }
